@@ -22,22 +22,17 @@ base_model = tf.keras.Sequential([
 input_spec = tf.TensorSpec((1, *input_shape), tf.float32)
 runner = IterativePruningRunner(base_model, input_spec)
 
-x_test = []
-y_test = []
-
+ds_test = ds_test.batch(32)
+ds_train = ds_train.batch(32)
 
 def add_normalized_values(img, label):
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
-    x_test.append(norm_img)
-    y_test.append(label)
     return norm_img, label
 
 
 # map data
-ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+ds_test = ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
-ds_test = ds_test.batch(32)
-ds_train = ds_train.batch(32)
 
 # train
 base_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -46,7 +41,7 @@ base_model.fit(ds_train, epochs=15)
 
 def evaluate(model):
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    score = model.evaluate(x_test, y_test, verbose=0)
+    score = model.evaluate(ds_test, verbose=0)
     return score[1]
 
 
