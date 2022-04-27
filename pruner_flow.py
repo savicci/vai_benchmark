@@ -52,5 +52,5 @@ runner.ana(evaluate)
 sparse_model = runner.prune(ratio=0.2)
 
 sparse_model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-sparse_model.fit(ds_train, batch_size=32, epochs=15, validation_split=0.1)
+sparse_model.fit(ds_train, epochs=15)
 sparse_model.save_weights("model_sparse_0.2", save_format="tf")
