@@ -7,7 +7,7 @@ tf.get_logger().setLevel('INFO')
 
 # variables
 SHARPNESS = 0.3
-MAX_ITERATIONS = 15
+MAX_ITERATIONS = 5
 DESIRED_ACCURACY = 0.85
 
 
