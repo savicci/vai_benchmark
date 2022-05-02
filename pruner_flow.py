@@ -82,7 +82,7 @@ base_model.summary()
 pruned_model = pruning_loop(base_model)
 
 spec = tf.TensorSpec((1, *input_shape), tf.float32)
-runner = IterativePruningRunner(pruned_model, input_spec)
+runner = IterativePruningRunner(pruned_model, spec)
 pruned_slim_model = runner.get_slim_model()
 
 pruned_slim_model.summary()
