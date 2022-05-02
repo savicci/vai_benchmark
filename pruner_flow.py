@@ -3,6 +3,8 @@ import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 from contextlib import redirect_stdout
 
+tf.get_logger().setLevel('INFO')
+
 # variables
 SHARPNESS = 0.3
 MAX_ITERATIONS = 15
