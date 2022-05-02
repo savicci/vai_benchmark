@@ -16,39 +16,6 @@ def evaluate(model):
     return score[1]
 
 
-def pruning_loop(model):
-    ratio = 0.5
-    iteration = 0
-
-    input_spec = tf.TensorSpec((1, *input_shape), tf.float32)
-    curr_accuracy = evaluate(model)
-
-    while curr_accuracy >= 0.85:
-        print("Iteration {}".format(iteration))
-        print("Accuracy {}".format(curr_accuracy))
-
-        # setup
-        filename = "pruned/model_sparse_{}".format(iteration)
-        pruning_runner = IterativePruningRunner(model, input_spec)
-        pruning_runner.ana(evaluate)
-
-        # run pruning
-        sparse_model = pruning_runner.prune(ratio=ratio)
-        sparse_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-        sparse_model.fit(ds_train, epochs=15)
-        sparse_model.save_weights(filename, save_format="tf")
-
-        # post pruning setup for next iteration
-        iteration += 1
-        curr_accuracy = evaluate(sparse_model)
-        model.load_weights(filename)
-
-        # decrease pruning ratio
-        ratio *= 0.8
-
-    return model
-
-
 input_shape = (28, 28, 1)
 num_classes = 10
 
@@ -80,10 +47,38 @@ base_model.evaluate(ds_test)
 
 base_model.summary()
 
-pruned_model = pruning_loop(base_model)
+ratio = 0.7
+iteration = 0
 
+input_spec = tf.TensorSpec((1, *input_shape), tf.float32)
+curr_accuracy = evaluate(base_model)
+
+while curr_accuracy >= 0.85:
+    print("Iteration {}".format(iteration))
+    print("Accuracy {}".format(curr_accuracy))
+
+    # setup
+    filename = "pruned/model_sparse_{}".format(iteration)
+    pruning_runner = IterativePruningRunner(base_model, input_spec)
+    pruning_runner.ana(evaluate)
+
+    # run pruning
+    sparse_model = pruning_runner.prune(ratio=ratio)
+    sparse_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    sparse_model.fit(ds_train, epochs=15)
+    sparse_model.save_weights(filename, save_format="tf")
+
+    # post pruning setup for next iteration
+    iteration += 1
+    curr_accuracy = evaluate(sparse_model)
+    base_model.load_weights(filename)
+
+    # decrease pruning ratio
+    ratio *= 0.8
+
+print("Finished pruning")
 spec = tf.TensorSpec((1, *input_shape), tf.float32)
-runner = IterativePruningRunner(pruned_model, spec)
+runner = IterativePruningRunner(base_model, spec)
 pruned_slim_model = runner.get_slim_model()
 
 pruned_slim_model.summary()
