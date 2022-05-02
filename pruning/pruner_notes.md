@@ -1,0 +1,4 @@
+- ratio must increase every iteration
+- sometimes increasing ratio will not make model sparser, gotta break here (no way to know how, pruning only logs to output pre and post pruning params)
+- most networks can reduce 90% of their original size, then nothing happens if we further try, ratio is only guidance to pruner, not hard requirement
+- fine tuning with iterative pruner takes lot of time if datasets are big since we're essentially retraining whole network 

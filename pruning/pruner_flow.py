@@ -3,10 +3,10 @@ import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 from contextlib import redirect_stdout
 
-tf.get_logger().setLevel('INFO')
+tf.get_logger().setLevel('ERROR')
 
 # variables
-SHARPNESS = 0.5
+SHARPNESS = 0.3
 MAX_ITERATIONS = 5
 DESIRED_ACCURACY = 0.85
 
@@ -20,7 +20,7 @@ def add_normalized_values(img, label):
 def evaluate(model):
     """Function used by Pruner to evaluate pruning performance"""
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    score = model.evaluate(ds_validation, verbose=0)
+    score = model.evaluate(ds_test, verbose=0)
     return score[1]
 
 
@@ -47,8 +47,6 @@ def prune_loop(init_model):
         prev_model = tf.keras.models.clone_model(base_model)
 
         pruning_runner = IterativePruningRunner(base_model, input_spec)
-
-        # will analyze once, then use cached results
         pruning_runner.ana(evaluate)
 
         # pruning process
@@ -58,7 +56,7 @@ def prune_loop(init_model):
 
         # fine-tuning process
         sparse_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-        sparse_model.fit(ds_train, epochs=10)
+        sparse_model.fit(ds_train, epochs=15)
 
         # accuracy evaluation process
         curr_accuracy = evaluate(sparse_model)
@@ -75,30 +73,35 @@ def prune_loop(init_model):
 
     return base_model
 
+
+input_shape = (28, 28, 1)
+num_classes = 10
+
 # load dataset
-(ds_train, ds_validation) = tfds.load('imagenet_resized/64x64', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
+(ds_train, ds_test) = tfds.load('fashion_mnist', split=['train', 'test'], as_supervised=True, shuffle_files=True)
 
 # map data
-ds_validation = ds_validation.batch(32)
+ds_test = ds_test.batch(32)
 ds_train = ds_train.batch(32)
 
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+ds_test = ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 # create model
-input_shape = (64, 64, 3)
-input_t = tf.keras.Input(shape=input_shape)
-res_model = tf.keras.applications.resnet_v2.ResNet50V2(include_top=False, input_tensor=input_t)
-
-init_model = tf.keras.models.Sequential()
-init_model.add(res_model)
-init_model.add(tf.keras.layers.Flatten())
-init_model.add(tf.keras.layers.Dense(1000, activation='softmax'))
+init_model = tf.keras.Sequential([
+    tf.keras.Input(shape=input_shape),
+    tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(num_classes, activation="softmax"),
+])
 
 # train
 init_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 init_model.fit(ds_train, epochs=15)
-init_model.evaluate(ds_validation)
+init_model.evaluate(ds_test)
 
 # save init summary
 with open('init_model_summary.txt', 'w') as f:
@@ -119,3 +122,5 @@ pruned_slim_model = runner.get_slim_model()
 with open('pruned_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
+
+pruned_slim_model.save('models/pruned_fmnist')
