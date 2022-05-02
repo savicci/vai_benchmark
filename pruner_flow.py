@@ -38,7 +38,7 @@ def prune_loop(init_model):
 
     base_model = tf.keras.models.clone_model(init_model)
 
-    for i in range(MAX_ITERATIONS):
+    for i in range(1, MAX_ITERATIONS):
         print("Iteration {}".format(i))
 
         # clone model in case that after pruning accuracy will be lower than desired
