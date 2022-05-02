@@ -25,6 +25,7 @@ def pruning_loop(model):
 
     while curr_accuracy >= 0.85:
         print("Iteration {}".format(iteration))
+        print("Accuracy {}".format(curr_accuracy))
 
         # setup
         filename = "pruned/model_sparse_{}".format(iteration)
@@ -39,7 +40,7 @@ def pruning_loop(model):
 
         # post pruning setup for next iteration
         iteration += 1
-        curr_accuracy = sparse_model.evaluate(ds_test)[1]
+        curr_accuracy = evaluate(sparse_model)
         model.load_weights(filename)
 
         # decrease pruning ratio
