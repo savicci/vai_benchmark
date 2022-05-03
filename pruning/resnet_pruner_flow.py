@@ -2,8 +2,14 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 from contextlib import redirect_stdout
+import argparse
 
 tf.get_logger().setLevel('ERROR')
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--checkpoint', default=None, help='path to checkpoint to use', type=str)
+args = parser.parse_args()
+
 
 # variables
 SHARPNESS = 0.5
@@ -79,21 +85,25 @@ def prune_loop(init_model):
 (ds_train, ds_validation) = tfds.load('imagenet_resized/64x64', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
 
 # map data
-ds_validation = ds_validation.batch(64)
-ds_train = ds_train.batch(64)
+ds_validation = ds_validation.batch(192)
+ds_train = ds_train.batch(192)
 
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 # create model
 input_shape = (64, 64, 3)
-input_t = tf.keras.Input(shape=input_shape)
-res_model = tf.keras.applications.resnet_v2.ResNet50V2(include_top=False, input_tensor=input_t)
 
-init_model = tf.keras.models.Sequential()
-init_model.add(res_model)
-init_model.add(tf.keras.layers.Flatten())
-init_model.add(tf.keras.layers.Dense(1000, activation='softmax'))
+if args.checkpoint is not None:
+    init_model = tf.keras.models.load_model(args.checkpoint)
+else:
+    input_t = tf.keras.Input(shape=input_shape)
+    res_model = tf.keras.applications.resnet_v2.ResNet50V2(include_top=False, input_tensor=input_t)
+
+    init_model = tf.keras.models.Sequential()
+    init_model.add(res_model)
+    init_model.add(tf.keras.layers.Flatten())
+    init_model.add(tf.keras.layers.Dense(1000, activation='softmax'))
 
 # train
 init_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
