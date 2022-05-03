@@ -12,9 +12,9 @@ args = parser.parse_args()
 
 
 # variables
-SHARPNESS = 0.5
-MAX_ITERATIONS = 5
-DESIRED_ACCURACY = 0.85
+SHARPNESS = 0.3
+MAX_ITERATIONS = 8
+DESIRED_ACCURACY = 0.75
 
 
 def add_normalized_values(img, label):
