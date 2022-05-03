@@ -67,7 +67,7 @@ def prune_loop(init_model):
             print("Accuracy after pruning {}".format(curr_accuracy))
 
         # load sparse_model weights to base_model
-        filename = "data/pruned/fmnist_model_sparse_{}".format(i)
+        filename = "/workspace/vai_benchmark/data/pruned/fmnist_model_sparse_{}".format(i)
         sparse_model.save_weights(filename, save_format="tf")
         base_model.load_weights(filename)
 
@@ -104,7 +104,7 @@ init_model.fit(ds_train, epochs=15)
 init_model.evaluate(ds_test)
 
 # save init summary
-with open('data/results/fmnist_init_model_summary.txt', 'w') as f:
+with open('/workspace/vai_benchmark/data/results/fmnist_init_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         init_model.summary()
 
@@ -119,8 +119,8 @@ runner = IterativePruningRunner(final_model, spec)
 pruned_slim_model = runner.get_slim_model()
 
 # save pruned summary
-with open('data/results/fmnist_pruned_model_summary.txt', 'w') as f:
+with open('/workspace/vai_benchmark/data/results/fmnist_pruned_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
-pruned_slim_model.save('data/models/pruned_fmnist')
+pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_fmnist')

@@ -9,7 +9,7 @@ def add_normalized_values(img, label):
 
 
 # load model
-float_model = tf.keras.models.load_model('data/models/pruned_fmnist')
+float_model = tf.keras.models.load_model('/workspace/vai_benchmark/data/models/pruned_fmnist')
 
 # load calibration dataset
 ds_train = tfds.load('fashion_mnist', split=['train'], as_supervised=True, shuffle_files=True)
@@ -25,4 +25,4 @@ quantizer = vitis_quantize.VitisQuantizer(float_model)
 quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_step=None, calib_batch_size=None, include_fast_ft=True, fast_ft_epochs=10)
 
 # save
-quantized_model.save('data/models/quantized_fmnist.h5')
+quantized_model.save('/workspace/vai_benchmark/data/models/quantized_fmnist.h5')
