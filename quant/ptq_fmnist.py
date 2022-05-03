@@ -15,14 +15,14 @@ float_model = tf.keras.models.load_model('/workspace/vai_benchmark/data/models/p
 ds_train = tfds.load('fashion_mnist', split='train', as_supervised=True, shuffle_files=True)
 
 # map data
-ds_train = ds_train.batch(32)
+ds_train = ds_train.batch(10)
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 # create quantizer
 quantizer = vitis_quantize.VitisQuantizer(float_model)
 
 # quantize with fine tuning
-quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=32, include_fast_ft=True, fast_ft_epochs=5)
+quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_step=100, calib_batch_size=10, include_fast_ft=True, fast_ft_epochs=5)
 
 # save
 quantized_model.save('/workspace/vai_benchmark/data/models/quantized_fmnist.h5')
