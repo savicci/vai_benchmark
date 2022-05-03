@@ -12,7 +12,7 @@ def add_normalized_values(img, label):
 float_model = tf.keras.models.load_model('/workspace/vai_benchmark/data/models/pruned_fmnist')
 
 # load calibration dataset
-ds_train = tfds.load('fashion_mnist', split=['train'], as_supervised=True, shuffle_files=True)
+(ds_train) = tfds.load('fashion_mnist', split=['train'], as_supervised=True, shuffle_files=True)
 
 # map data
 ds_train = ds_train.batch(32)
