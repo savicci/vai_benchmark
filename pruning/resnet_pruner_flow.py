@@ -69,7 +69,7 @@ def prune_loop(init_model):
             print("Accuracy after pruning {}".format(curr_accuracy))
 
         # load sparse_model weights to base_model
-        filename = "pruned/model_sparse_{}".format(i)
+        filename = "data/pruned/resnet_model_sparse_{}".format(i)
         sparse_model.save_weights(filename, save_format="tf")
         base_model.load_weights(filename)
 
@@ -79,8 +79,8 @@ def prune_loop(init_model):
 (ds_train, ds_validation) = tfds.load('imagenet_resized/64x64', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
 
 # map data
-ds_validation = ds_validation.batch(32)
-ds_train = ds_train.batch(32)
+ds_validation = ds_validation.batch(64)
+ds_train = ds_train.batch(64)
 
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -120,4 +120,4 @@ with open('pruned_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
-pruned_slim_model.save('models/pruned_resnet')
+pruned_slim_model.save('data/models/pruned_resnet')

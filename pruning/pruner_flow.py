@@ -3,7 +3,7 @@ import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 from contextlib import redirect_stdout
 
-tf.get_logger().setLevel('ERROR')
+tf.get_logger().setLevel('WARNING')
 
 # variables
 SHARPNESS = 0.3
@@ -67,7 +67,7 @@ def prune_loop(init_model):
             print("Accuracy after pruning {}".format(curr_accuracy))
 
         # load sparse_model weights to base_model
-        filename = "pruned/model_sparse_{}".format(i)
+        filename = "data/pruned/fmnist_model_sparse_{}".format(i)
         sparse_model.save_weights(filename, save_format="tf")
         base_model.load_weights(filename)
 
@@ -81,8 +81,8 @@ num_classes = 10
 (ds_train, ds_test) = tfds.load('fashion_mnist', split=['train', 'test'], as_supervised=True, shuffle_files=True)
 
 # map data
-ds_test = ds_test.batch(32)
-ds_train = ds_train.batch(32)
+ds_test = ds_test.batch(64)
+ds_train = ds_train.batch(64)
 
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 ds_test = ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -123,4 +123,4 @@ with open('pruned_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
-pruned_slim_model.save('models/pruned_fmnist')
+pruned_slim_model.save('data/models/pruned_fmnist')
