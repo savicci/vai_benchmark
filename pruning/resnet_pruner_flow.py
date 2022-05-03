@@ -8,8 +8,9 @@ tf.get_logger().setLevel('ERROR')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--checkpoint', default=None, help='path to checkpoint to use', type=str)
+parser.add_argument('-s', '--skip_train', default=False,
+                    help='Indicates whether to skip training and go straight to pruning', type=bool)
 args = parser.parse_args()
-
 
 # variables
 SHARPNESS = 0.3
@@ -81,8 +82,10 @@ def prune_loop(init_model):
 
     return base_model
 
+
 # load dataset
-(ds_train, ds_validation) = tfds.load('imagenet_resized/64x64', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
+(ds_train, ds_validation) = tfds.load('imagenet_resized/64x64', split=['train', 'validation'], as_supervised=True,
+                                      shuffle_files=True)
 
 # map data
 ds_validation = ds_validation.batch(192)
@@ -107,7 +110,10 @@ else:
 
 # train
 init_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-init_model.fit(ds_train, epochs=15)
+
+if args.skip_train is not True:
+    init_model.fit(ds_train, epochs=15)
+
 init_model.evaluate(ds_validation)
 
 # save just in case we need more training
