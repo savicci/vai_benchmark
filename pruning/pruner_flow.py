@@ -6,7 +6,7 @@ from contextlib import redirect_stdout
 tf.get_logger().setLevel('WARNING')
 
 # variables
-SHARPNESS = 0.3
+SHARPNESS = 0.2
 MAX_ITERATIONS = 5
 DESIRED_ACCURACY = 0.85
 

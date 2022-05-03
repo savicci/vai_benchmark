@@ -5,4 +5,4 @@
 conda activate vitis-ai-optimizer_tensorflow2
 pip3 install tensorflow_datasets
 
-export XILINXD_LICENSE_FILE=/workspace/home/gkoziol/vai_optimizer.lic
+export XILINXD_LICENSE_FILE=/workspace/vai_optimizer.lic
