@@ -38,7 +38,7 @@ quant_res = quantized_model.evaluate(ds_test)
 print('Float model evaluation results', float_res)
 print('Quantized model evaluation results', quant_res)
 
-with open('/workspace/data/results/ptq_fmnist.txt', 'w') as f:
+with open('/workspace/vai_benchmark/data/results/ptq_fmnist.txt', 'w') as f:
     f.write("Float model results")
     f.write(float_res)
     f.write('\n')
