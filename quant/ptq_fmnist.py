@@ -29,8 +29,10 @@ quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=1
 # save
 quantized_model.save('/workspace/vai_benchmark/data/models/quantized/quantized_fmnist.h5')
 
+float_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 float_res = float_model.evaluate(ds_test)
 
+quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 quant_res = quantized_model.evaluate(ds_test)
 
 print('Float model evaluation results', float_res)
