@@ -101,7 +101,7 @@ init_model.fit(ds_train, epochs=15)
 init_model.evaluate(ds_validation)
 
 # save init summary
-with open('init_model_summary.txt', 'w') as f:
+with open('data/results/resnet_init_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         init_model.summary()
 
@@ -116,7 +116,7 @@ runner = IterativePruningRunner(final_model, spec)
 pruned_slim_model = runner.get_slim_model()
 
 # save pruned summary
-with open('pruned_model_summary.txt', 'w') as f:
+with open('data/results/resnet_pruned_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
