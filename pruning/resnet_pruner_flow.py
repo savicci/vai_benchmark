@@ -110,6 +110,9 @@ init_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", met
 init_model.fit(ds_train, epochs=15)
 init_model.evaluate(ds_validation)
 
+# save just in case we need more training
+init_model.save('/workspace/vai_benchmark/models/resnet50_15e')
+
 # save init summary
 with open('/workspace/vai_benchmark/data/results/resnet_init_model_summary.txt', 'w') as f:
     with redirect_stdout(f):
