@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
+from contextlib import redirect_stdout
 
 def add_normalized_values(img, label):
     """Normalizes images"""
@@ -39,8 +40,6 @@ print('Float model evaluation results', float_res)
 print('Quantized model evaluation results', quant_res)
 
 with open('/workspace/vai_benchmark/data/results/ptq_fmnist.txt', 'w') as f:
-    f.write("Float model results")
-    f.write(float_res)
-    f.write('\n')
-    f.write("Quantized model results")
-    f.write(quant_res)
+    with redirect_stdout(f):
+        print('Float model evaluation results', float_res)
+        print('Quantized model evaluation results', quant_res)
