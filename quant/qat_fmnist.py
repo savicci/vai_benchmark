@@ -10,8 +10,19 @@ def add_normalized_values(img, label):
     return norm_img, label
 
 
+input_shape = (28, 28, 1)
+num_classes = 10
+
 # load model
-float_model = tf.keras.models.load_model('/workspace/vai_benchmark/data/models/pruned_fmnist')
+float_model = tf.keras.Sequential([
+    tf.keras.Input(shape=input_shape),
+    tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(num_classes, activation="softmax"),
+])
 
 # load dataset
 (ds_train, ds_test) = tfds.load('fashion_mnist', split=['train', 'test'], as_supervised=True, shuffle_files=True)
@@ -31,6 +42,7 @@ qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metr
 float_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
 qat_model.fit(ds_train, epochs=15)
+float_model.fit(ds_train, epochs=15)
 
 # evaluate
 float_res = float_model.evaluate(ds_test)
