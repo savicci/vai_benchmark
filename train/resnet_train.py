@@ -3,7 +3,7 @@ import tensorflow_datasets as tfds
 
 def add_normalized_values(img, label):
     """Normalizes images"""
-    tf.image.resize(img, [224, 224])
+    img = tf.image.resize(img, [224, 224])
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
     return norm_img, label
 
