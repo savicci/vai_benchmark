@@ -25,7 +25,7 @@ float_model.compile(
     metrics='accuracy'
 )
 
-float_model.evaluate(ds_validation)
+float_model.fit(ds_train, epochs=150)
 
-
+float_model.save('../models/resnet_50_trained.h5')
 
