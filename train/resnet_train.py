@@ -19,7 +19,7 @@ ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.d
 
 
 # load model
-float_model = tf.keras.models.load('../models/resnet_50.h5')
+float_model = tf.keras.models.load_model('../models/resnet_50.h5')
 
 float_model.compile(
     optimizer="adam",
