@@ -21,11 +21,11 @@ float_model = tf.keras.models.load_model('../models/resnet_50.h5')
 
 float_model.compile(
     optimizer="adam",
-    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    loss='sparse_categorical_crossentropy',
     metrics='accuracy'
 )
 
-float_model.evaluate(ds_validation, verbose=2)
+float_model.evaluate(ds_validation)
 
 
 
