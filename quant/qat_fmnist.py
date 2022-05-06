@@ -41,8 +41,8 @@ qat_model = quantizer.get_qat_model(init_quant=True, calib_dataset=ds_train)
 qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 float_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-qat_model.fit(ds_train, epochs=15)
-float_model.fit(ds_train, epochs=15)
+qat_model.fit(ds_train, epochs=20)
+float_model.fit(ds_train, epochs=20)
 
 # evaluate
 float_res = float_model.evaluate(ds_test)
