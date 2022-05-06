@@ -1,6 +1,10 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
+tf.config.experimental.set_memory_growth(physical_devices[1], True)
+
 def add_normalized_values(img, label):
     """Normalizes images"""
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
