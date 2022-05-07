@@ -19,8 +19,8 @@ def add_normalized_values(img, label):
 ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
-ds_train = ds_train.batch(100)
-ds_validation = ds_validation.batch(100)
+ds_train = ds_train.batch(64)
+ds_validation = ds_validation.batch(64)
 
 # load model from vitis ai pre optimized models
 float_model = tf.keras.models.load_model('../models/resnet_50.h5')
