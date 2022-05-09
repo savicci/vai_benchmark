@@ -1,9 +1,13 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--checkpoint', default=None, help='path to checkpoint to use', type=str)
+args = parser.parse_args()
 
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
-tf.config.experimental.set_memory_growth(physical_devices[1], True)
 
 
 def add_normalized_values(img, label):
@@ -23,7 +27,10 @@ ds_train = ds_train.batch(64)
 ds_validation = ds_validation.batch(64)
 
 # load model from vitis ai pre optimized models
-float_model = tf.keras.models.load_model('../models/resnet_50.h5')
+if args.checkpoint is not None:
+    float_model = tf.keras.models.load_model(args.checkpoint)
+else:
+    float_model = tf.keras.models.load_model('../models/resnet_50.h5')
 
 float_model.compile(
     optimizer="adam",
