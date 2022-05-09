@@ -7,8 +7,8 @@ parser.add_argument('-c', '--checkpoint', default=None, help='path to checkpoint
 args = parser.parse_args()
 
 physical_devices = tf.config.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
+for device in physical_devices:
+    tf.config.experimental.set_memory_growth(device, True)
 
 def add_normalized_values(img, label):
     """Normalizes images"""
