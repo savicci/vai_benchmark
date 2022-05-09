@@ -41,6 +41,6 @@ float_model.compile(
 checkpoint_path = '/workspace/vai_benchmark/data/train/checkpoints/resnet.ckpt'
 cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_only=False, verbose=1, period=5)
 
-float_model.fit(ds_train, validation_data=ds_validation, epochs=100, callbacks=[cp_callback])
+float_model.fit(ds_train, validation_data=ds_validation, epochs=30, callbacks=[cp_callback])
 
 float_model.save('../models/resnet_50_trained.h5')
