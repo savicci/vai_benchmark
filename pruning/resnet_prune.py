@@ -47,6 +47,17 @@ print('Evaluation after pruning')
 pruned_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 print(pruned_model.evaluate(ds_validation, verbose=0))
 
+print("Fine tuning")
+pruned_model.fit(ds_train, validation_data=ds_validation, epochs=5)
+
+print('Evaluation after fine tuning')
+print(pruned_model.evaluate(ds_validation, verbose=0))
+
+spec = tf.TensorSpec((1, *input_shape), tf.float32)
+runner = IterativePruningRunner(pruned_model, spec)
+pruned_slim_model = runner.get_slim_model()
+
+pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_trained_resnet')
 
 
 
