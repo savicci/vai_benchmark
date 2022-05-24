@@ -6,7 +6,7 @@ import argparse
 input_shape = (224, 224, 3)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-r', '--ratio', default=None, help='Ratio to prune. Float value from 0 to 1', type=float)
+parser.add_argument('-r', '--ratio', default=0.5, help='Ratio to prune. Float value from 0 to 1', type=float)
 args = parser.parse_args()
 
 
