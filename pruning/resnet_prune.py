@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 import argparse
+from contextlib import redirect_stdout
 
 input_shape = (224, 224, 3)
 
@@ -41,6 +42,10 @@ pruning_runner = IterativePruningRunner(trained_model, input_spec)
 
 pruning_runner.ana(evaluate)
 
+print('Evaulation before pruning')
+trained_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+print(trained_model.evaluate(ds_validation, verbose=0))
+
 pruned_model = pruning_runner.prune(ratio=args.ratio)
 
 print('Evaluation after pruning')
@@ -48,14 +53,17 @@ pruned_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", m
 print(pruned_model.evaluate(ds_validation, verbose=0))
 
 print("Fine tuning")
-pruned_model.fit(ds_train, validation_data=ds_validation, epochs=5)
+pruned_model.fit(ds_train, validation_data=ds_validation, epochs=15)
 
 print('Evaluation after fine tuning')
 print(pruned_model.evaluate(ds_validation, verbose=0))
 
-spec = tf.TensorSpec((1, *input_shape), tf.float32)
-runner = IterativePruningRunner(pruned_model, spec)
-pruned_slim_model = runner.get_slim_model()
+# get slim model
+pruned_slim_model = pruning_runner.get_slim_model()
+
+with open('/workspace/vai_benchmark/data/results/_pruned_trained_resnet_model_summary.txt', 'w') as f:
+    with redirect_stdout(f):
+        pruned_slim_model.summary()
 
 pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_trained_resnet')
 
