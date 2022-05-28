@@ -8,6 +8,8 @@ input_shape = (224, 224, 3)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-r', '--ratio', default=0.5, help='Ratio to prune. Float value from 0 to 1', type=float)
+parser.add_argument('-m', '--model', default=False, help='Use pre trained pre pruned model', type=float)
+parser.add_argument('-p', '--path', default="", help='Path to pre pruned model', type=str)
 args = parser.parse_args()
 
 
@@ -25,7 +27,10 @@ def evaluate(model):
 
 
 # load trained model
-trained_model = tf.keras.models.load_model('/workspace/vai_benchmark/models/resnet_50_trained.h5')
+if args.model:
+    trained_model = tf.keras.models.load_model(args.path)
+else:
+    trained_model = tf.keras.models.load_model('/workspace/vai_benchmark/models/resnet_50_trained.h5')
 
 # dataset preparation
 (ds_train, ds_validation) = tfds.load('imagenet2012', shuffle_files=True, as_supervised=True,
