@@ -70,7 +70,7 @@ with open('/workspace/vai_benchmark/data/results/_pruned_trained_resnet_model_su
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
-pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_trained_resnet')
+pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_trained_resnet_' + args.ratio)
 
 
 
