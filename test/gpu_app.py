@@ -3,6 +3,7 @@ import time
 
 import numpy as np
 import tensorflow as tf
+import itertools
 
 import fmnist_utils
 
@@ -34,6 +35,9 @@ def app(model, batch_size, threads):
     end_time = time.time()
 
     execution_time = end_time - start_time
+
+    # flatten output because its in batches
+    output_vectors = list(itertools.chain(*output_vectors))
 
     throughput = float(len(processed_images) / execution_time)
     print(divider)
