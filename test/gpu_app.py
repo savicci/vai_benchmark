@@ -38,6 +38,7 @@ def app(model, batch_size, threads):
 
     # flatten output because its in batches
     output_vectors = list(itertools.chain(*output_vectors))
+    print("After flattening", len(output_vectors))
 
     throughput = float(len(processed_images) / execution_time)
     print(divider)
