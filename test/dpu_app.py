@@ -47,7 +47,7 @@ def get_child_subgraph_dpu(graph: "Graph") -> List["Subgraph"]:
     ]
 
 
-def runDPU(id, start, dpu, img):
+def runDPU(start, dpu, img):
     # get input/output tensors from DPU
     input_tensors = dpu.get_input_tensors()
     output_tensors = dpu.get_output_tensors()
@@ -56,45 +56,58 @@ def runDPU(id, start, dpu, img):
     input_ndim = tuple(input_tensors[0].dims)
     output_ndim = tuple(output_tensors[0].dims)
 
-    batch_size = input_ndim[0]
-    n_of_images = len(img)
+    print("Input tensor dimensions", input_ndim)
+    print("Output tensor dimensions", output_ndim)
+
+    max_batch_size = input_ndim[0]
+    images_length = len(img)
     count = 0
-    ids = []
-    ids_max = 50
-    outputData = []
-    for i in range(ids_max):
-        outputData.append([np.empty(output_ndim, dtype=np.int8, order="C")])
-    while count < n_of_images:
-        if (count + batch_size <= n_of_images):
-            runSize = batch_size
+    jobs = []
+    max_jobs_running = 50
+    output_data = []
+
+    for i in range(max_jobs_running):
+        output_data.append([np.empty(output_ndim, dtype=np.int8)])
+
+    while count < images_length:
+        if count + max_batch_size <= images_length:
+            actual_batch_size = max_batch_size
         else:
-            runSize = n_of_images - count
+            actual_batch_size = images_length - count
 
-        '''prepare batch input/output '''
-        inputData = [np.empty(input_ndim, dtype=np.int8, order="C")]
+        # batch input
+        input_data = [np.empty(input_ndim, dtype=np.int8)]
 
-        '''init input image to input buffer '''
-        for j in range(runSize):
-            imageRun = inputData[0]
-            imageRun[j, ...] = img[(count + j) % n_of_images].reshape(input_ndim[1:])
-        '''run with batch '''
-        job_id = dpu.execute_async(inputData, outputData[len(ids)])
-        ids.append((job_id, runSize, start + count))
-        count = count + runSize
-        if count < n_of_images:
-            if len(ids) < ids_max - 1:
+        # initialize input image to input buffer
+        for j in range(actual_batch_size):
+            img_data = input_data[0]
+            img_data[j, ...] = img[(count + j) % images_length].reshape(input_ndim[1:])
+
+        # run async with batch
+        job_id = dpu.execute_async(input_data, output_data[len(jobs)])
+        jobs.append((job_id, actual_batch_size, start + count))
+
+        count += actual_batch_size
+
+        # if we processed all images we start listening for remaining to finish
+        # if we have more than max_jobs_running jobs running, wait for them to finish
+        if count < images_length:
+            if len(jobs) < max_jobs_running - 1:
                 continue
-        for index in range(len(ids)):
-            dpu.wait(ids[index][0])
-            write_index = ids[index][2]
-            '''store output vectors '''
-            for j in range(ids[index][1]):
-                # we can avoid output scaling if use argmax instead of softmax
-                # out_q[write_index] = np.argmax(outputData[0][j] * output_scale)
-                output_vectors[write_index] = np.argmax(outputData[index][0][j])
+
+        # wait for all scheduled tasks to finish before going to next loop
+        for index in range(len(jobs)):
+            dpu.wait(jobs[index][0])
+            write_index = jobs[index][2]
+
+            # store output vectors in global variable
+            for j in range(jobs[index][1]):
+                # get top 1 value
+                output_vectors[write_index] = np.argmax(output_data[index][0][j])
                 write_index += 1
-        ids = []
-    pass
+
+        # reset jobs running
+        jobs = []
 
 
 def app(model, threads):
@@ -136,7 +149,7 @@ def app(model, threads):
             end = start + (len(processed_images) // threads)
 
         input_vectors = processed_images[start:end]
-        thread = threading.Thread(target=runDPU, args=(i, start, dpu_runners[i], input_vectors))
+        thread = threading.Thread(target=runDPU, args=(start, dpu_runners[i], input_vectors))
         all_threads.append(thread)
         start = end
 

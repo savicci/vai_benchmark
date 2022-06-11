@@ -3,11 +3,11 @@ import time
 
 import numpy as np
 import tensorflow as tf
-import itertools
 
 import fmnist_utils
 
 divider = '------------------------------------'
+
 
 def app(model, batch_size, threads):
     tf.config.experimental.list_physical_devices()
@@ -19,7 +19,7 @@ def app(model, batch_size, threads):
     model = tf.keras.models.load_model(model)
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-    # to keep same interfaces will not do anything
+    # to keep same interfaces, will not do anything
     input_scale = 1
 
     print('Preprocessing {} images'.format(len(images)))
@@ -32,12 +32,12 @@ def app(model, batch_size, threads):
     # process images
     output_vectors = model.predict(processed_images, batch_size=batch_size, workers=threads, use_multiprocessing=True)
 
+    # get top 1 value
+    output_vectors = [np.argmax(prediction) for prediction in output_vectors]
+
     end_time = time.time()
 
     execution_time = end_time - start_time
-
-    # get top 1 value
-    output_vectors = [np.argmax(prediction) for prediction in output_vectors]
 
     throughput = float(len(processed_images) / execution_time)
     print(divider)
@@ -58,7 +58,6 @@ if __name__ == '__main__':
                         help='Batch size used for prediction. Default is 32')
     parser.add_argument('-t', '--threads', type=int, default='1',
                         help='Workers to use for multi process threading prediction. Default is 1')
-
 
     args = parser.parse_args()
     print(' --model     : ', args.model)
