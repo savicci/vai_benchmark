@@ -36,12 +36,8 @@ def app(model, batch_size, threads):
 
     execution_time = end_time - start_time
 
-    # flatten output because its in batches
-    print("Before flattening", len(output_vectors))
-    print(output_vectors[0])
-    print(output_vectors[0].shape)
-    output_vectors = list(itertools.chain(*output_vectors))
-    print("After flattening", len(output_vectors))
+    # get top 1 value
+    output_vectors = [np.argmax(prediction) for prediction in output_vectors]
 
     throughput = float(len(processed_images) / execution_time)
     print(divider)
