@@ -177,6 +177,7 @@ def app(model, threads):
     print("Throughput=%.2f fps, total frames = %.0f, time=%.4f seconds" % (
         throughput, len(processed_images), execution_time))
 
+    print(divider)
     print('Postprocessing {} images'.format(len(processed_images)))
     postprocess_results(output_vectors, labels)
 
