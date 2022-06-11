@@ -38,6 +38,8 @@ def app(model, batch_size, threads):
 
     # flatten output because its in batches
     print("Before flattening", len(output_vectors))
+    print(output_vectors[0])
+    print(output_vectors[0].shape)
     output_vectors = list(itertools.chain(*output_vectors))
     print("After flattening", len(output_vectors))
 
