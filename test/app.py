@@ -145,7 +145,7 @@ def app(model, threads):
     print('Preprocessing {} images'.format(len(images)))
     processed_images = preprocess_dataset(images, input_scale)
 
-    print('Running {} threads'.format_map(threads))
+    print('Running {} threads'.format(threads))
     all_threads = []
     start = 0
 
