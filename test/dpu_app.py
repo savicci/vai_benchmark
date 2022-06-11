@@ -7,7 +7,7 @@ import vart
 import argparse
 import threading
 import time
-import tensorflow_datasets as tfds
+import fmnist_utils
 
 divider = '------------------------------------'
 
@@ -15,38 +15,17 @@ divider = '------------------------------------'
 # vai_tracepoint decorator enables tracing on function level
 @vai_tracepoint
 def load_tensorflow_dataset() -> Tuple[List, List]:
-    ds_test = tfds.load('fashion_mnist', split='test', shuffle_files=True)
-
-    images = []
-    labels = []
-    for record in tfds.as_numpy(ds_test):
-        images.append(record['image'])
-        labels.append(record['label'])
-
-    return images, labels
+    return fmnist_utils.load_tensorflow_dataset()
 
 
 @vai_tracepoint
 def preprocess_dataset(images, scale) -> List:
-    return [record * (1 / 255.0) * scale for record in images]
+    return fmnist_utils.preprocess_dataset(images, scale)
 
 
 @vai_tracepoint
 def postprocess_results(out_vectors, labels):
-    correct = 0
-    miss = 0
-
-    for i in range(len(out_vectors)):
-        prediction = out_vectors[i]
-
-        if prediction == labels[i]:
-            correct += 1
-        else:
-            miss += 1
-
-    accuracy = correct / len(out_vectors)
-    print('Correct:%d, Wrong:%d, Accuracy:%.4f' % (correct, miss, accuracy))
-    print(divider)
+    fmnist_utils.postprocess_results(out_vectors, labels)
 
 
 def get_child_subgraph_dpu(graph: "Graph") -> List["Subgraph"]:
