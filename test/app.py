@@ -43,7 +43,6 @@ def postprocess_results(out_vectors, labels):
             correct += 1
         else:
             miss += 1
-            print("Predicted: {}, real: {}".format(prediction, labels[i]))
 
     accuracy = correct / len(out_vectors)
     print('Correct:%d, Wrong:%d, Accuracy:%.4f' % (correct, miss, accuracy))
