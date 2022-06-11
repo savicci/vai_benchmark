@@ -37,6 +37,7 @@ def app(model, batch_size, threads):
     execution_time = end_time - start_time
 
     # flatten output because its in batches
+    print("Before flattening", len(output_vectors))
     output_vectors = list(itertools.chain(*output_vectors))
     print("After flattening", len(output_vectors))
 
