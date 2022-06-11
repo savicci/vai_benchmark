@@ -11,4 +11,4 @@ NETNAME=$3
 
 ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 
-vai_c_tensorflow2 -m $PATH_TO_MODEL -a /PATH/TO/arch.json -o $OUTPUTPATH -n $NETNAME
+vai_c_tensorflow2 -m $PATH_TO_MODEL -a $ARCH -o $OUTPUTPATH -n $NETNAME
