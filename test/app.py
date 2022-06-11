@@ -36,7 +36,7 @@ def postprocess_results(out_vectors, labels):
     correct = 0
     miss = 0
 
-    for i in range(out_vectors):
+    for i in range(len(out_vectors)):
         prediction = out_vectors[i]
 
         if prediction == labels[i]:
