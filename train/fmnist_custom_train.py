@@ -4,12 +4,6 @@ import argparse
 from contextlib import redirect_stdout
 import os
 
-physical_devices = tf.config.list_physical_devices('GPU')
-for device in physical_devices:
-    tf.config.experimental.set_memory_growth(device, True)
-
-tf.config.experimental.set_visible_devices(physical_devices[1], 'GPU')
-
 
 def add_normalized_values(img, label):
     """Normalizes images"""
@@ -73,7 +67,14 @@ def app(batch_size, epochs, workspace, prefix):
 
     print('Finished training and saving information')
 
+
 if __name__ == '__main__':
+    physical_devices = tf.config.list_physical_devices('GPU')
+    for device in physical_devices:
+        tf.config.experimental.set_memory_growth(device, True)
+
+    tf.config.experimental.set_visible_devices(physical_devices[1], 'GPU')
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-b', '--batch_size', type=int, default='32',
