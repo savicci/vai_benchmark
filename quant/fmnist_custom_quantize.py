@@ -43,9 +43,9 @@ def app(epochs, workspace, calibrations, prefix, batch_size, batch_size_ft):
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations, calib_batch_size=batch_size)
 
     # fine-tuning process
-    ds_train, ds_test = load_dataset(batch_size_ft)
-    quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    quantized_model.fit(ds_train, epochs=epochs)
+    # ds_train, ds_test = load_dataset(batch_size_ft)
+    # quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    # quantized_model.fit(ds_train, epochs=epochs)
 
     # evaluate
     with open(workspace + '/' + prefix + '/quantized/fmnist_pruned_evaluate.txt', 'w+') as f:
