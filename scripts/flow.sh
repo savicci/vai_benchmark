@@ -11,6 +11,10 @@ WORKSPACE=/workspace/bechmark_results
 # compile for throughput
 ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 
+mkdir -p $WORKSPACE/$PREFIX/trained
+mkdir -p $WORKSPACE/$PREFIX/pruned
+mkdir -p $WORKSPACE/$PREFIX/quantized
+
 
 # use tf2 env
 # train network
