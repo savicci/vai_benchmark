@@ -29,7 +29,9 @@ def load_model(workspace, prefix) -> tf.keras.models.Model:
     return tf.keras.models.load_model(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
 
 
-def app(epochs, workspace, calibrations, prefix, batch_size):
+def app(epochs, workspace, calibrations, prefix, batch_size, batch_size_ft):
+    ds_train, ds_test = load_dataset(args.batch_size)
+
     # model to use
     model = load_model(workspace, prefix)
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -41,6 +43,8 @@ def app(epochs, workspace, calibrations, prefix, batch_size):
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations, calib_batch_size=batch_size)
 
     # fine-tuning process
+    ds_train = ds_train.batch_size(batch_size_ft)
+    ds_test = ds_test.batch_size(batch_size_ft)
     quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     quantized_model.fit(ds_train, epochs=epochs)
 
@@ -67,6 +71,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-b', '--batch_size', type=int, default='10',
                         help='Batch size to use for calibration. Default is 10')
+    parser.add_argument('-f', '--batch_size_ft', type=int, default='32',
+                        help='Batch size to use for finetuning. Default is 32')
     parser.add_argument('-e', '--epochs', type=int, default='10',
                         help='Epoch number to finetune network. Default is 10')
     parser.add_argument('-c', '--calibrations', type=int, default='100',
@@ -83,10 +89,7 @@ if __name__ == '__main__':
     print(' --workspace   : ', args.workspace)
     print(' --prefix   : ', args.prefix)
 
-    # load dataset. Needs to be done earlier for evaluate function
-    ds_train, ds_test = load_dataset(args.batch_size)
-
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/quantized', exist_ok=True)
 
-    app(args.epochs, args.workspace, args.calibrations, args.prefix, args.batch_size)
+    app(args.epochs, args.workspace, args.calibrations, args.prefix, args.batch_size, args.batch_size_ft)
