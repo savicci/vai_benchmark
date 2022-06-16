@@ -34,6 +34,7 @@ def create_model(input_shape, num_classes) -> tf.keras.models.Model:
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Dense(1000, activation="sigmoid"),
         tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(num_classes, activation="softmax"),
     ])
