@@ -67,7 +67,11 @@ def app(epochs, workspace, ratio, prefix):
             sparse_model.summary()
 
     # save model
-    runner = IterativePruningRunner(sparse_model, input_spec)
+    filename = "/tmp/vai_benchmark/data/pruned/fmnist_model_sparse"
+    sparse_model.save_weights(filename, save_format="tf")
+    model.load_weights(filename)
+
+    runner = IterativePruningRunner(model, input_spec)
     pruned_slim_model = runner.get_slim_model()
     pruned_slim_model.save(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
 
