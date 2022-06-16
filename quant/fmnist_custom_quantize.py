@@ -3,6 +3,7 @@ import tensorflow_datasets as tfds
 import argparse
 from contextlib import redirect_stdout
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
+import os
 
 physical_devices = tf.config.list_physical_devices('GPU')
 for device in physical_devices:
@@ -89,5 +90,8 @@ if __name__ == '__main__':
 
     # load dataset. Needs to be done earlier for evaluate function
     ds_train, ds_test = load_dataset(args.batch_size)
+
+    # create dir
+    os.makedirs(args.workspace + '/' + args.prefix + '/quantized', exist_ok=True)
 
     app(args.epochs, args.workspace, args.calibrations, args.prefix, args.batch_size)

@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import argparse
 from contextlib import redirect_stdout
+import os
 
 physical_devices = tf.config.list_physical_devices('GPU')
 for device in physical_devices:
@@ -90,5 +91,8 @@ if __name__ == '__main__':
     print(' --epochs   : ', args.epochs)
     print(' --workspace   : ', args.workspace)
     print(' --prefix   : ', args.prefix)
+
+    # create dir
+    os.makedirs(args.workspace + '/' + args.prefix + '/trained', exist_ok=True)
 
     app(args.batch_size, args.epochs, args.workspace, args.prefix)

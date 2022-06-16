@@ -3,6 +3,7 @@ import tensorflow_datasets as tfds
 import argparse
 from contextlib import redirect_stdout
 from tf_nndct.optimization import IterativePruningRunner
+import os
 
 physical_devices = tf.config.list_physical_devices('GPU')
 for device in physical_devices:
@@ -102,5 +103,8 @@ if __name__ == '__main__':
 
     # load dataset. Needs to be done earlier for evaluate function
     ds_train, ds_test = load_dataset(args.batch_size)
+
+    # create dir
+    os.makedirs(args.workspace + '/' + args.prefix + '/pruned', exist_ok=True)
 
     app(args.epochs, args.workspace, args.ratio, args.prefix)
