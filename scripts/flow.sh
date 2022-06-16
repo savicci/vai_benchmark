@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # create random prefix
-PREFIX = $(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
+PREFIX=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
 echo 'Using prefix $PREFIX'
 
 RATIO=0.9
