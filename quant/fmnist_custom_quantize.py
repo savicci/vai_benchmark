@@ -42,7 +42,8 @@ def app(workspace, calibrations, prefix, batch_size, fast_ft_epochs):
 
     # quantize with fine tuning
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations,
-                                               calib_batch_size=batch_size, include_fast_ft=True, fast_ft_epochs=fast_ft_epochs)
+                                               calib_batch_size=batch_size, include_fast_ft=True,
+                                               fast_ft_epochs=fast_ft_epochs)
     quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # evaluate
@@ -87,4 +88,4 @@ if __name__ == '__main__':
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/quantized', exist_ok=True)
 
-    app(args.workspace, args.calibrations, args.prefix, args.batch_size)
+    app(args.workspace, args.calibrations, args.prefix, args.batch_size, args.fast_ft_epochs)
