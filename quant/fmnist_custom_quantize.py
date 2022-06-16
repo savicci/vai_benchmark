@@ -30,7 +30,7 @@ def load_model(workspace, prefix) -> tf.keras.models.Model:
 
 
 def app(epochs, workspace, calibrations, prefix, batch_size, batch_size_ft):
-    ds_train, ds_test = load_dataset(args.batch_size)
+    ds_train, ds_test = load_dataset(batch_size)
 
     # model to use
     model = load_model(workspace, prefix)
@@ -43,8 +43,7 @@ def app(epochs, workspace, calibrations, prefix, batch_size, batch_size_ft):
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations, calib_batch_size=batch_size)
 
     # fine-tuning process
-    ds_train = ds_train.batch(batch_size_ft)
-    ds_test = ds_test.batch(batch_size_ft)
+    ds_train, ds_test = load_dataset(batch_size_ft)
     quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     quantized_model.fit(ds_train, epochs=epochs)
 
