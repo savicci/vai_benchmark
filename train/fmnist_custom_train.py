@@ -57,13 +57,13 @@ def app(batch_size, epochs, workspace, prefix):
     model.fit(ds_train, epochs=epochs)
 
     # evaluate
-    with open(workspace + '/' + prefix + '/trained/fmnist_evaluate.txt', 'w') as f:
+    with open(workspace + '/' + prefix + '/trained/fmnist_evaluate.txt', 'w+') as f:
         with redirect_stdout(f):
             loss, accuracy = model.evaluate(ds_test, verbose=2)
             print('Loss {}, accuracy {}'.format(loss, accuracy))
 
     # save init summary
-    with open(workspace + '/' + prefix + '/trained/fmnist_init_summary.txt', 'w') as f:
+    with open(workspace + '/' + prefix + '/trained/fmnist_init_summary.txt', 'w+') as f:
         with redirect_stdout(f):
             model.summary()
 

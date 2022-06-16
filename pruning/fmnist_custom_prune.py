@@ -62,13 +62,13 @@ def app(epochs, workspace, ratio, prefix):
     sparse_model.fit(ds_train, epochs=epochs)
 
     # evaluate
-    with open(workspace + '/' + prefix + '/pruned/fmnist_pruned_evaluate.txt', 'w') as f:
+    with open(workspace + '/' + prefix + '/pruned/fmnist_pruned_evaluate.txt', 'w+') as f:
         with redirect_stdout(f):
             loss, accuracy = sparse_model.evaluate(ds_test, verbose=2)
             print('Loss {}, accuracy {}'.format(loss, accuracy))
 
     # save init summary
-    with open(workspace + '/' + prefix + '/pruned/fmnist_init_summary.txt', 'w') as f:
+    with open(workspace + '/' + prefix + '/pruned/fmnist_init_summary.txt', 'w+') as f:
         with redirect_stdout(f):
             sparse_model.summary()
 
