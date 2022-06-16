@@ -67,7 +67,9 @@ def app(epochs, workspace, ratio, prefix):
             sparse_model.summary()
 
     # save model
-    sparse_model.save(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
+    runner = IterativePruningRunner(sparse_model, input_spec)
+    pruned_slim_model = runner.get_slim_model()
+    pruned_slim_model.save(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
 
     print('Finished pruning and saving information')
 
