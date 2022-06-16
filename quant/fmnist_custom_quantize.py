@@ -26,7 +26,7 @@ def load_dataset(batch_size):
 
 
 def load_model(workspace, prefix) -> tf.keras.models.Model:
-    return tf.keras.models.load_model(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
+    return tf.keras.models.load_model(workspace + '/' + prefix + '/pruned/fmnist_model')
 
 
 def app(epochs, workspace, calibrations, prefix, batch_size, batch_size_ft):

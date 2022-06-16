@@ -26,7 +26,7 @@ def load_dataset(batch_size):
 
 
 def load_model(workspace, prefix) -> tf.keras.models.Model:
-    return tf.keras.models.load_model(workspace + '/' + prefix + '/trained/fmnist_model.h5')
+    return tf.keras.models.load_model(workspace + '/' + prefix + '/trained/fmnist_model')
 
 
 def evaluate(model):
@@ -73,7 +73,7 @@ def app(epochs, workspace, ratio, prefix):
 
     runner = IterativePruningRunner(model, input_spec)
     pruned_slim_model = runner.get_slim_model()
-    pruned_slim_model.save(workspace + '/' + prefix + '/pruned/fmnist_model.h5')
+    pruned_slim_model.save(workspace + '/' + prefix + '/pruned/fmnist_model')
 
     print('Finished pruning and saving information')
 

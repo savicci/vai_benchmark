@@ -63,7 +63,7 @@ def app(batch_size, epochs, workspace, prefix):
             model.summary()
 
     # save model
-    model.save(workspace + '/' + prefix + '/trained/fmnist_model.h5')
+    model.save(workspace + '/' + prefix + '/trained/fmnist_model')
 
     print('Finished training and saving information')
 
