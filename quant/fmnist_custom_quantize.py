@@ -41,6 +41,7 @@ def app(epochs, workspace, calibrations, prefix, batch_size):
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations, calib_batch_size=batch_size)
 
     # fine-tuning process
+    quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     quantized_model.fit(ds_train, epochs=epochs)
 
     # evaluate
