@@ -28,7 +28,7 @@ python ../pruning/fmnist_custom_prune.py --batch_size 128 --epochs 5 --workspace
 # setup for quantizing
 # quantize network
 conda activate vitis-ai-tensorflow2
-python ../quant/fmnist_custom_quantize.py --batch_size 5 --fast_ft_epochs 5 --workspace $WORKSPACE --prefix $PREFIX --calibrations $CALIBRATION_STEPS
+python ../quant/fmnist_custom_quantize.py --batch_size 10 --fast_ft_epochs 5 --workspace $WORKSPACE --prefix $PREFIX --calibrations $CALIBRATION_STEPS
 
 # compile network
 vai_c_tensorflow2 -m $WORKSPACE/$PREFIX/quantized/fmnist_model.h5 -a $ARCH -o $WORKSPACE/$PREFIX/compiled -n fmnist
