@@ -32,3 +32,5 @@ python ../quant/fmnist_custom_quantize.py --batch_size 10 --epochs 10 --workspac
 
 # compile network
 vai_c_tensorflow2 -m $WORKSPACE/$PREFIX/quantized/fmnist_model.h5 -a $ARCH -o $WORKSPACE/$PREFIX/compiled -n fmnist
+
+echo Finished compiling file in $WORKSPACE/$PREFIX
