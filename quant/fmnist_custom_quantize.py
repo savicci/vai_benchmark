@@ -30,7 +30,7 @@ def load_model(workspace, prefix) -> tf.keras.models.Model:
     return tf.keras.models.load_model(workspace + '/' + prefix + '/pruned/fmnist_model')
 
 
-def app(workspace, calibrations, prefix, batch_size):
+def app(workspace, calibrations, prefix, batch_size, fast_ft_epochs):
     ds_train, ds_test = load_dataset(batch_size)
 
     # model to use
@@ -42,7 +42,7 @@ def app(workspace, calibrations, prefix, batch_size):
 
     # quantize with fine tuning
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations,
-                                               calib_batch_size=batch_size)
+                                               calib_batch_size=batch_size, include_fast_ft=True, fast_ft_epochs=fast_ft_epochs)
     quantized_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # evaluate
@@ -73,6 +73,8 @@ if __name__ == '__main__':
                         help='Path to folder to write pruned model summary, evaluate and h5')
     parser.add_argument('-p', '--prefix', type=str, default='default',
                         help='Prefix to folder where all information will be written')
+    parser.add_argument('-f', '--fast_ft_epochs', type=int, default='10',
+                        help='Amount of epochs for fast finetuning quantized model')
 
     args = parser.parse_args()
     print('Command line options:')
@@ -80,6 +82,7 @@ if __name__ == '__main__':
     print(' --calibrations   : ', args.calibrations)
     print(' --prefix   : ', args.prefix)
     print(' --batch_size   : ', args.batch_size)
+    print(' --fast_ft_epochs   : ', args.fast_ft_epochs)
 
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/quantized', exist_ok=True)
