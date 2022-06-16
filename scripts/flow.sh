@@ -2,7 +2,7 @@
 
 # create random prefix
 PREFIX=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
-echo 'Using prefix $PREFIX'
+echo Using prefix $PREFIX
 
 RATIO=0.9
 CALIBRATION_STEPS=100

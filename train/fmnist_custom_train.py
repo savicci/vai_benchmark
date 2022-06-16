@@ -3,6 +3,12 @@ import tensorflow_datasets as tfds
 import argparse
 from contextlib import redirect_stdout
 
+physical_devices = tf.config.list_physical_devices('GPU')
+for device in physical_devices:
+    tf.config.experimental.set_memory_growth(device, True)
+
+tf.config.experimental.set_visible_devices(physical_devices[1], 'GPU')
+
 
 def add_normalized_values(img, label):
     """Normalizes images"""
