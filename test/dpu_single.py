@@ -102,9 +102,9 @@ def run_dpus(dpu_runners, img):
         write_index = jobs[i][2]
 
         # store output vectors in global variable
-        for j in range(jobs[index][1]):
+        for j in range(jobs[i][1]):
             # get top 1 value
-            output_vectors[write_index] = np.argmax(output_data[index][0][j])
+            output_vectors[write_index] = np.argmax(output_data[i][0][j])
             write_index += 1
 
 
