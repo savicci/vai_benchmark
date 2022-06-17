@@ -61,10 +61,6 @@ def app(epochs, workspace, ratio, prefix):
             loss, accuracy = sparse_model.evaluate(ds_test, verbose=2)
             print('Loss {}, accuracy {}'.format(loss, accuracy))
 
-    # save init summary
-    with open(workspace + '/' + prefix + '/pruned/fmnist_init_summary.txt', 'w+') as f:
-        with redirect_stdout(f):
-            sparse_model.summary()
 
     # save model
     filename = "/tmp/vai_benchmark/data/pruned/fmnist_model_sparse"
@@ -74,6 +70,11 @@ def app(epochs, workspace, ratio, prefix):
     runner = IterativePruningRunner(model, input_spec)
     pruned_slim_model = runner.get_slim_model()
     pruned_slim_model.save(workspace + '/' + prefix + '/pruned/fmnist_model')
+
+    # save init summary
+    with open(workspace + '/' + prefix + '/pruned/fmnist_init_summary.txt', 'w+') as f:
+        with redirect_stdout(f):
+            pruned_slim_model.summary()
 
     print('Finished pruning and saving information')
 
