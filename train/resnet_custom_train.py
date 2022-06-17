@@ -14,12 +14,13 @@ def add_normalized_values(img, label):
 
 def load_dataset(batch_size):
     (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
-    # use batching
-    ds_validation = ds_validation.batch(batch_size)
-    ds_train = ds_train.batch(batch_size)
     # map data
     ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+    # use batching
+    ds_validation = ds_validation.batch(batch_size)
+    ds_train = ds_train.batch(batch_size)
 
     return ds_train, ds_validation
 
