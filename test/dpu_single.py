@@ -161,6 +161,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print('Command line options:')
     print(' --model     : ', args.model)
-    print(' --dpu_cores     : ', args.threads)
+    print(' --dpu_cores     : ', args.dpu_cores)
 
     app(args.model, args.dpu_cores)
