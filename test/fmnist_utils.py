@@ -1,11 +1,13 @@
 from typing import List, Tuple
 import tensorflow_datasets as tfds
+import os
 
 divider = '------------------------------------'
 
 
 def load_tensorflow_dataset() -> Tuple[List, List]:
-    ds_test = tfds.load('fashion_mnist', split='test', shuffle_files=True)
+    data_dir = os.getenv('TFDS_DATA_DIR')
+    ds_test = tfds.load('fashion_mnist', split='test', shuffle_files=True, data_dir=data_dir)
 
     images = []
     labels = []
