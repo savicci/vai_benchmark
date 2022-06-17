@@ -13,7 +13,8 @@ def add_normalized_values(img, label):
 
 
 def load_dataset(batch_size):
-    (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
+    (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True,
+                                          shuffle_files=True)
     # map data
     ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -61,7 +62,6 @@ def app(batch_size, epochs, workspace, prefix):
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-b', '--batch_size', type=int, default='32',
@@ -79,6 +79,10 @@ if __name__ == '__main__':
     print(' --epochs   : ', args.epochs)
     print(' --workspace   : ', args.workspace)
     print(' --prefix   : ', args.prefix)
+
+    physical_devices = tf.config.list_physical_devices('GPU')
+    for device in physical_devices:
+        tf.config.experimental.set_memory_growth(device, True)
 
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/trained', exist_ok=True)
