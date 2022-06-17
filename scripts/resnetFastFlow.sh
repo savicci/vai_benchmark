@@ -9,7 +9,7 @@ CALIBRATION_STEPS=100
 WORKSPACE=/workspace/bechmark_results
 
 # export visible device for tf
-export CUDA_VISIBLE_DEVICES=1
+export CUDA_VISIBLE_DEVICES=0,1
 
 # compile for throughput
 ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
