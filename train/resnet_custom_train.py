@@ -9,7 +9,7 @@ import os
 def add_normalized_values(img, label):
     """Normalizes images"""
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
-    return tf.image.resize(norm_img, [224, 224]), label + 1
+    return tf.image.resize(norm_img, [224, 224]), label
 
 
 def load_dataset(batch_size):
@@ -25,19 +25,8 @@ def load_dataset(batch_size):
     return ds_train, ds_validation
 
 
-def create_model(input_shape, num_classes) -> tf.keras.models.Model:
-    model_handle = "https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5"
-
-    model = tf.keras.Sequential([
-        # Explicitly define the input shape so the model can be properly
-        # loaded by the TFLiteConverter
-        tf.keras.layers.InputLayer(input_shape=input_shape),
-        hub.KerasLayer(model_handle, trainable=True),
-        tf.keras.layers.Dropout(rate=0.2),
-        tf.keras.layers.Dense(num_classes, kernel_regularizer=tf.keras.regularizers.l2(0.0001))
-    ])
-    model.build((None,) + input_shape)
-    return model
+def create_model() -> tf.keras.models.Model:
+    return tf.keras.models.load_model('../models/resnet_50.h5')
 
 
 def app(batch_size, epochs, workspace, prefix):
@@ -48,11 +37,11 @@ def app(batch_size, epochs, workspace, prefix):
     ds_train, ds_test = load_dataset(batch_size)
 
     # model to use
-    model = create_model(input_shape, num_classes)
+    model = create_model()
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # train model
-    model.fit(ds_train, batch_size=batch_size, epochs=epochs)
+    model.fit(ds_train, validation_data=ds_train, epochs=epochs)
 
     # evaluate
     with open(workspace + '/' + prefix + '/trained/resnet_evaluate.txt', 'w+') as f:
