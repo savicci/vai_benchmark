@@ -9,19 +9,18 @@ import os
 def add_normalized_values(img, label):
     """Normalizes images"""
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
-    return tf.image.resize(norm_img, [224, 224]), label
+    return tf.image.resize(norm_img, [224, 224]), label + 1
 
 
 def load_dataset(batch_size):
     (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
+    # map data
+    ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+    ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
     # use batching
     ds_validation = ds_validation.batch(batch_size)
     ds_train = ds_train.batch(batch_size)
-
-    # map data
-    ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
     return ds_train, ds_validation
 

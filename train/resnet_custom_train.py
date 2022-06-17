@@ -9,7 +9,7 @@ import os
 def add_normalized_values(img, label):
     """Normalizes images"""
     norm_img = tf.cast(img, dtype=tf.float32) / 255.0
-    return tf.image.resize(norm_img, [224, 224]), label
+    return tf.image.resize(norm_img, [224, 224]), label + 1
 
 
 def load_dataset(batch_size):
