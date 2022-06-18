@@ -26,19 +26,19 @@ def load_dataset(batch_size):
     return ds_train, ds_validation
 
 
-def create_model() -> tf.keras.models.Model:
-    return tf.keras.models.load_model('../models/resnet_50.h5')
+def create_model(checkpoint) -> tf.keras.models.Model:
+    if checkpoint is None:
+        return tf.keras.models.load_model('../models/resnet_50.h5')
+    else:
+        return tf.keras.models.load_model(checkpoint)
 
 
-def app(batch_size, epochs, workspace, prefix):
-    input_shape = (224, 224, 3)
-    num_classes = 1000
-
+def app(batch_size, epochs, workspace, prefix, checkpoint):
     # load dataset
     ds_train, ds_test = load_dataset(batch_size)
 
     # model to use
-    model = create_model()
+    model = create_model(checkpoint)
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # train model
@@ -72,6 +72,8 @@ if __name__ == '__main__':
                         help='Path to folder to write model summary, evaluate and h5')
     parser.add_argument('-p', '--prefix', type=str, default='default',
                         help='Prefix to folder where all information will be written')
+    parser.add_argument('-c', '--checkpoint', type=str, default=None,
+                        help='Path to use for resuming training. Default is None so it begins training from 0. Path should be to savedModel file')
 
     args = parser.parse_args()
     print('Command line options:')
@@ -79,6 +81,7 @@ if __name__ == '__main__':
     print(' --epochs   : ', args.epochs)
     print(' --workspace   : ', args.workspace)
     print(' --prefix   : ', args.prefix)
+    print(' --checkpoint   : ', args.checkpoint)
 
     physical_devices = tf.config.list_physical_devices('GPU')
     for device in physical_devices:
@@ -87,4 +90,4 @@ if __name__ == '__main__':
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/trained', exist_ok=True)
 
-    app(args.batch_size, args.epochs, args.workspace, args.prefix)
+    app(args.batch_size, args.epochs, args.workspace, args.prefix, args.checkpoint)
