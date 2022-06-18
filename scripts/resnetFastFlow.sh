@@ -16,6 +16,8 @@ ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 
 # use tf2 env
 # train network
+source /opt/vitis_ai/conda/etc/profile.d/conda.sh
+
 conda activate vitis-ai-tensorflow2
 python ../train/resnet_custom_train.py --batch_size 64 --epochs 1 --workspace $WORKSPACE --prefix $PREFIX --checkpoint /workspace/bechmark_results/lm6NcbXDQf/trained/resnet_model
 
