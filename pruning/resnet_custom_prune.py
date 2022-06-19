@@ -36,7 +36,7 @@ def evaluate(model):
 
 
 def app(epochs, workspace, ratio, prefix):
-    input_shape = (224, 244, 3)
+    input_shape = (224, 224, 3)
 
     # model to use
     model = load_model(workspace, prefix)
