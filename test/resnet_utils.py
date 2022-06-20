@@ -14,7 +14,7 @@ def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     labels = []
     i = 0
     for record in tfds.as_numpy(ds_test):
-        images.append(tf.image.resize(record['image'], [224, 224]))
+        images.append(tf.image.resize(record['image'], [224, 224]).numpy())
         labels.append(record['label'])
 
         i += 1
