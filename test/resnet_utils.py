@@ -5,21 +5,16 @@ import os
 
 divider = '------------------------------------'
 
-def add_normalized_values(img, label):
-    """Normalizes images"""
-    return tf.image.resize(img, [224, 224]), label
 
 def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('imagenet2012', split='validation', shuffle_files=True, data_dir=data_dir)
 
-    ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-
     images = []
     labels = []
     i = 0
     for record in tfds.as_numpy(ds_test):
-        images.append(record['image'])
+        images.append(tf.image.resize(record['image'], [224, 224]))
         labels.append(record['label'])
 
         i += 1
