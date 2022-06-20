@@ -30,7 +30,7 @@ python ../pruning/resnet_custom_prune.py --batch_size 64 --epochs 2 --workspace 
 # setup for quantizing
 # quantize network
 conda activate vitis-ai-tensorflow2
-python ../quant/resnet_custom_quantize.py --batch_size 16 --fast_ft_epochs 10 --workspace $WORKSPACE --prefix $PREFIX --calibrations $CALIBRATION_STEPS
+python ../quant/resnet_custom_quantize.py --batch_size 10 --fast_ft_epochs 10 --workspace $WORKSPACE --prefix $PREFIX --calibrations $CALIBRATION_STEPS
 
 # compile network
 vai_c_tensorflow2 -m $WORKSPACE/$PREFIX/quantized/resnet_model.h5 -a $ARCH -o $WORKSPACE/$PREFIX/compiled -n resnet
