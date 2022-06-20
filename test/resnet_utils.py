@@ -5,20 +5,22 @@ import os
 divider = '------------------------------------'
 
 
-def load_tensorflow_dataset(size = None) -> Tuple[List, List]:
+def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('imagenet2012', split='validation', shuffle_files=True, data_dir=data_dir)
 
     images = []
     labels = []
+    i = 0
     for record in tfds.as_numpy(ds_test):
         images.append(record['image'])
         labels.append(record['label'])
 
-    if size is None:
-        return images, labels
-    else:
-        return images[:size], labels[:size]
+        i += 1
+        if i == size:
+            break
+
+    return images, labels
 
 
 def preprocess_dataset(images, scale) -> List:
