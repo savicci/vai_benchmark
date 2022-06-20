@@ -61,6 +61,10 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--size', type=int, default=1000,
                         help='Size of validation dataset to use. Default is 1k')
 
+    physical_devices = tf.config.list_physical_devices('GPU')
+    for device in physical_devices:
+        tf.config.experimental.set_memory_growth(device, True)
+
     args = parser.parse_args()
     print(' --model     : ', args.model)
     print(' --batch_size     : ', args.batch_size)
