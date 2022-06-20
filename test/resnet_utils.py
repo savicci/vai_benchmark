@@ -1,13 +1,19 @@
 from typing import List, Tuple
 import tensorflow_datasets as tfds
+import tensorflow as tf
 import os
 
 divider = '------------------------------------'
 
+def add_normalized_values(img, label):
+    """Normalizes images"""
+    return tf.image.resize(img, [224, 224]), label
 
 def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('imagenet2012', split='validation', shuffle_files=True, data_dir=data_dir)
+
+    ds_test.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
     images = []
     labels = []
