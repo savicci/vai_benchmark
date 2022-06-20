@@ -8,7 +8,7 @@ RATIO=0.3
 CALIBRATION_STEPS=100
 WORKSPACE=/workspace/bechmark_results
 
-if [ $# -ne 2 ]; then
+if [ $# -ne 3 ]; then
      echo "Correct usage: ./fastFlow.sh <model> <network> <cuda_visible_devices>"
      echo "Example: ./fastFlow.sh resnet_50.sh resnet 0,1"
      return 1 2>/dev/null
