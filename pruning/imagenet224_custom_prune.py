@@ -97,12 +97,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     print('Command line options:')
-    print(' --ratio   : ', args.ratio)
-    print(' --batch_size   : ', args.batch_size)
-    print(' --epochs   : ', args.epochs)
-    print(' --workspace   : ', args.workspace)
-    print(' --prefix   : ', args.prefix)
-    print(' --network   : ', args.network)
+    print(' --ratio             : ', args.ratio)
+    print(' --batch_size        : ', args.batch_size)
+    print(' --epochs            : ', args.epochs)
+    print(' --workspace         : ', args.workspace)
+    print(' --prefix            : ', args.prefix)
+    print(' --network           : ', args.network)
 
     # load dataset. Needs to be done earlier for evaluate function
     ds_train, ds_test = load_dataset(args.batch_size)

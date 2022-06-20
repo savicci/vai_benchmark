@@ -80,12 +80,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     print('Command line options:')
-    print(' --workspace   : ', args.workspace)
-    print(' --calibrations   : ', args.calibrations)
-    print(' --prefix   : ', args.prefix)
-    print(' --batch_size   : ', args.batch_size)
-    print(' --fast_ft_epochs   : ', args.fast_ft_epochs)
-    print(' --network   : ', args.network)
+    print(' --workspace             : ', args.workspace)
+    print(' --calibrations          : ', args.calibrations)
+    print(' --prefix                : ', args.prefix)
+    print(' --batch_size            : ', args.batch_size)
+    print(' --fast_ft_epochs        : ', args.fast_ft_epochs)
+    print(' --network               : ', args.network)
 
     # create dir
     os.makedirs(args.workspace + '/' + args.prefix + '/quantized', exist_ok=True)

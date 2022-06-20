@@ -81,13 +81,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     print('Command line options:')
-    print(' --batch_size   : ', args.batch_size)
-    print(' --epochs   : ', args.epochs)
-    print(' --workspace   : ', args.workspace)
-    print(' --prefix   : ', args.prefix)
-    print(' --checkpoint   : ', args.checkpoint)
-    print(' --model   : ', args.model)
-    print(' --network   : ', args.network)
+    print(' --batch_size        : ', args.batch_size)
+    print(' --epochs            : ', args.epochs)
+    print(' --workspace         : ', args.workspace)
+    print(' --prefix            : ', args.prefix)
+    print(' --checkpoint        : ', args.checkpoint)
+    print(' --model             : ', args.model)
+    print(' --network           : ', args.network)
 
     physical_devices = tf.config.list_physical_devices('GPU')
     for device in physical_devices:
