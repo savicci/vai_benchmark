@@ -84,7 +84,6 @@ def run_dpus(dpu_runners, img):
         # initialize input image to input buffer
         for i in range(batch_size):
             img_data = input_data[0]
-            print(img[index + i].shape)
             img_data[i, ...] = img[index + i].reshape(dpu_input_ndims[iteration % dpu_cores][1:])
 
         # run job asynchronously
