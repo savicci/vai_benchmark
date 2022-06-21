@@ -36,7 +36,7 @@ source /opt/vitis_ai/conda/etc/profile.d/conda.sh
 
 conda activate vitis-ai-tensorflow2
 # will start training from pretrained model. If you want to supply your own override --checkpoint /workspace/bechmark_results/lm6NcbXDQf/trained/some_model
-python ../train/imagenet224_custom_train.py --batch_size 64 --epochs 1 --workspace $WORKSPACE --prefix $PREFIX --model $MODEL
+python ../train/imagenet224_custom_train.py --batch_size 64 --epochs 1 --workspace $WORKSPACE --prefix $PREFIX --model $MODEL --network $NETWORK
 
 # setup for pruning
 # prune network
