@@ -5,32 +5,25 @@ from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
 
 # variables
-epochs = 2
+epochs = 1
 calibrations = 100
 
 
 def create_model(layers_num):
-    layers = []
-
-    layers.extend([
-        tf.keras.Input(shape=fmnist_utils.shape),
+    return tf.keras.Sequential([
+        tf.keras.Input(shape=(28, 28, 1)),
         tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu"),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2))
-    ])
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Dense(1000, activation="relu"),
+        tf.keras.layers.Dense(1000, activation="relu"),
 
-    for i in range(layers_num):
-        layers.append(tf.keras.layers.Dense(1000, activation="relu"))
-
-    layers.extend([
         tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(fmnist_utils.output_classes, activation="softmax"),
+        tf.keras.layers.Dense(10, activation="softmax"),
     ])
-
-    return tf.keras.Sequential(layers)
 
 
 def app(batch_size, layers):
