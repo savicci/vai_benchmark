@@ -7,7 +7,6 @@ import numpy as np
 # variables
 epochs = 8
 calibrations = 100
-fast_ft_epochs = 2
 
 
 def create_model(layers_num):
@@ -48,8 +47,7 @@ def app(batch_size, layers):
     # quantize without pruning
     quantizer = vitis_quantize.VitisQuantizer(model)
     quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations,
-                                               calib_batch_size=batch_size, include_fast_ft=True,
-                                               fast_ft_epochs=fast_ft_epochs)
+                                               calib_batch_size=batch_size)
 
     # save model
     quantized_model.save('./fmnist_model.h5')
