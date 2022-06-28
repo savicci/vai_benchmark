@@ -5,7 +5,7 @@ from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
 
 # variables
-epochs = 8
+epochs = 1
 calibrations = 100
 
 
