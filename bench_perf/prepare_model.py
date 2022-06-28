@@ -1,5 +1,5 @@
 import tensorflow as tf
-from utils import fmnist_utils
+from bench_perf import fmnist_utils
 import argparse
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
 from keras.utils.layer_utils import count_params
