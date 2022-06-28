@@ -2,7 +2,7 @@ import tensorflow as tf
 import fmnist_utils
 import argparse
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
-from keras.utils.layer_utils import count_params
+import numpy as np
 
 # variables
 epochs = 8
@@ -55,8 +55,7 @@ def app(batch_size, layers):
     quantized_model.save('./fmnist_model.h5')
 
     # save param number
-    params = count_params(model.trainable_weights)
-
+    params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
     with open('./params.txt', 'w') as f:
         f.write(params)
 
