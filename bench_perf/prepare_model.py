@@ -8,7 +8,7 @@ from tensorflow.keras import backend as K
 K.set_image_data_format('channels_first')
 
 # variables
-epochs = 1
+epochs = 2
 calibrations = 100
 
 
@@ -46,6 +46,10 @@ def app(batch_size, layers):
 
     # train for a moment
     model.fit(ds_train, epochs=epochs)
+
+    model.save('./fmnist_temp')
+    model = tf.keras.models.load_model('./fmnist_temp')
+    model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # quantize without pruning
     quantizer = vitis_quantize.VitisQuantizer(model)
