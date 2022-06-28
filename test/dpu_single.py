@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 import xir
-from vaitrace_py import vai_tracepoint
+# from vaitrace_py import vai_tracepoint
 import vart
 import argparse
 import time
@@ -12,17 +12,17 @@ divider = '------------------------------------'
 
 
 # vai_tracepoint decorator enables tracing on function level
-@vai_tracepoint
+# @vai_tracepoint
 def load_tensorflow_dataset() -> Tuple[List, List]:
     return fmnist_utils.load_tensorflow_dataset()
 
 
-@vai_tracepoint
+# @vai_tracepoint
 def preprocess_dataset(images, scale) -> List:
     return fmnist_utils.preprocess_dataset(images, scale)
 
 
-@vai_tracepoint
+# @vai_tracepoint
 def postprocess_results(out_vectors, labels):
     fmnist_utils.postprocess_results(out_vectors, labels)
 
