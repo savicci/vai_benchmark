@@ -3,6 +3,9 @@ import fmnist_utils
 import argparse
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
+from tensorflow.keras import backend as K
+
+K.set_image_data_format('channels_first')
 
 # variables
 epochs = 1
