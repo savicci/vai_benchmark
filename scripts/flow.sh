@@ -17,7 +17,7 @@ ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 # use tf2 env
 # train network
 conda activate vitis-ai-tensorflow2
-python ../train/fmnist_custom_train.py --batch_size 128 --epochs 20 --workspace $WORKSPACE --prefix $PREFIX
+python ../train/fmnist_custom_train.py --batch_size 128 --epochs 1 --workspace $WORKSPACE --prefix $PREFIX
 
 # setup for pruning
 # prune network
