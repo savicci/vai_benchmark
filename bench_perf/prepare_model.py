@@ -39,7 +39,7 @@ def app(batch_size, layers):
 
     model.save('./fmnist_temp')
     model = tf.keras.models.load_model('./fmnist_temp')
-    model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # quantize without pruning
     quantizer = vitis_quantize.VitisQuantizer(model)
