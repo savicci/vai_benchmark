@@ -12,11 +12,11 @@ calibrations = 100
 def create_model(layers_num):
     return tf.keras.Sequential([
         tf.keras.Input(shape=(28, 28, 1)),
-        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu", padding="same"),
+        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu", padding="same"),
+        tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding="same"),
+        tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Dense(1000, activation="relu"),
         tf.keras.layers.Dense(1000, activation="relu"),
@@ -39,7 +39,7 @@ def app(batch_size, layers):
 
     model.save('./fmnist_temp')
     model = tf.keras.models.load_model('./fmnist_temp')
-    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # quantize without pruning
     quantizer = vitis_quantize.VitisQuantizer(model)
