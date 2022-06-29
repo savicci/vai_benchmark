@@ -21,9 +21,9 @@ python ../train/fmnist_custom_train.py --batch_size 128 --epochs 20 --workspace 
 
 # setup for pruning
 # prune network
-conda activate vitis-ai-optimizer_tensorflow2
-export XILINXD_LICENSE_FILE=/workspace/vai_optimizer.lic
-python ../pruning/fmnist_custom_prune.py --batch_size 128 --epochs 10 --workspace $WORKSPACE --prefix $PREFIX --ratio $RATIO
+#conda activate vitis-ai-optimizer_tensorflow2
+#export XILINXD_LICENSE_FILE=/workspace/vai_optimizer.lic
+#python ../pruning/fmnist_custom_prune.py --batch_size 128 --epochs 10 --workspace $WORKSPACE --prefix $PREFIX --ratio $RATIO
 
 # setup for quantizing
 # quantize network
