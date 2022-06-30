@@ -37,14 +37,14 @@ if __name__ == '__main__':
     print('Command line options:')
     print(' --layer            : ', args.layer)
 
-    with open('./params{}.txt'.format(args.layer), 'r') as f:
+    with open('/workspace/vai_benchmark/bench_perf/params{}.txt'.format(args.layer), 'r') as f:
         params = f.readline()
 
     summary_rows = []
     saving = False
 
     # read data
-    with open('./profile_summary.csv', 'r') as file:
+    with open('/workspace/vai_benchmark/bench_perf/profile_summary.csv', 'r') as file:
         reader = csv.reader(file, delimiter=',')
         for row in reader:
             if 'DPU Summary' in row:

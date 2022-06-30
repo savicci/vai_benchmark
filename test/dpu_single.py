@@ -29,16 +29,12 @@ def postprocess_results(out_vectors, labels):
 
 def get_child_subgraph_dpu(graph: "Graph") -> List["Subgraph"]:
     assert graph is not None, "'graph' should not be None."
-
     root_subgraph = graph.get_root_subgraph()
     assert (root_subgraph is not None), "Failed to get root subgraph of input Graph object."
-
     if root_subgraph.is_leaf:
         return []
-
     child_subgraphs = root_subgraph.toposort_child_subgraph()
     assert child_subgraphs is not None and len(child_subgraphs) > 0
-
     return [
         cs
         for cs in child_subgraphs
