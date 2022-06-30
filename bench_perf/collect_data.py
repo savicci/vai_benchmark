@@ -37,7 +37,7 @@ if __name__ == '__main__':
     print('Command line options:')
     print(' --layer            : ', args.layer)
 
-    with open('/workspace/vai_benchmark/bench_perf/params{}.txt'.format(args.layer), 'r') as f:
+    with open('/workspace/vai_benchmark/bench_perf/params_{}.txt'.format(args.layer), 'r') as f:
         params = f.readline()
 
     summary_rows = []
