@@ -8,8 +8,10 @@ ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for i in 1 2 3
+for i in {1..5}
 do
+  echo Running $i loop
+
   # prepare model
   python prepare_model.py --layers $i
 
