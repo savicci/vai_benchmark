@@ -6,7 +6,7 @@ import numpy as np
 
 # variables
 epochs = 1
-calibrations = 100
+calibrations = 10
 
 
 def create_model(layers_num):
