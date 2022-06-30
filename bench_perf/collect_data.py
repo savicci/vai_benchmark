@@ -44,7 +44,7 @@ if __name__ == '__main__':
     saving = False
 
     # read data
-    with open('/workspace/vai_benchmark/bench_perf/profile_summary.csv', 'r') as file:
+    with open('/workspace/vai_benchmark/test/profile_summary.csv', 'r') as file:
         reader = csv.reader(file, delimiter=',')
         for row in reader:
             if 'DPU Summary' in row:
