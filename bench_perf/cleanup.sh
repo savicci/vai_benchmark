@@ -2,7 +2,7 @@
 
 rm fmnist_model.h5
 
-rm params.*
+rm params_*
 
 rm *.csv
 
