@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# run on vitis 1.4.1 container because on other version dpu does not answer
+source ../compile/setupAlveoThroughput.sh
+
 # use high throughput architecture
 ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 
