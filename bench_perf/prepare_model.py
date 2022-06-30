@@ -52,7 +52,7 @@ def app(batch_size, layers):
     # save param number
     params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
     with open('./params.txt', 'w') as f:
-        f.write(params)
+        f.write(str(params))
 
 
 if __name__ == '__main__':
