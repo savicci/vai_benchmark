@@ -1,5 +1,6 @@
 import csv
 import os
+import argparse
 
 # 10 columns + 1 empty
 profile_summary_columns_num = 11
@@ -27,7 +28,16 @@ def append_data_to_file(file_name, start_idx):
         writer.writerow(data_row)
 
 if __name__ == '__main__':
-    with open('./params.txt', 'r') as f:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-l', '--layer', type=int, default=1,
+                        help='Layer to use for params')
+
+    args = parser.parse_args()
+    print('Command line options:')
+    print(' --layer            : ', args.layer)
+
+    with open('./params{}.txt'.format(args.layer), 'r') as f:
         params = f.readline()
 
     summary_rows = []

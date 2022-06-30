@@ -10,20 +10,27 @@ calibrations = 100
 
 
 def create_model(layers_num):
-    return tf.keras.Sequential([
-        tf.keras.Input(shape=(28, 28, 1)),
+    layers = []
+
+    layers.extend([
+        tf.keras.Input(shape=fmnist_utils.shape),
         tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu"),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Dense(1000, activation="relu"),
-        tf.keras.layers.Dense(1000, activation="relu"),
-
-        tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(10, activation="softmax"),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2))
     ])
+
+    for i in range(layers_num):
+        layers.append(tf.keras.layers.Dense(1000, activation="relu"))
+
+    layers.extend([
+        tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(fmnist_utils.output_classes, activation="softmax"),
+    ])
+
+    return tf.keras.Sequential(layers)
 
 
 def app(batch_size, layers):
@@ -51,7 +58,7 @@ def app(batch_size, layers):
 
     # save param number
     params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
-    with open('./params.txt', 'w') as f:
+    with open('./params_{}.txt'.format(layers), 'w') as f:
         f.write(str(params))
 
 
