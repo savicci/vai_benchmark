@@ -6,4 +6,6 @@ rm params_*
 
 rm *.csv
 
+rm compiled_*
+
 rm xclbin.run_summary
