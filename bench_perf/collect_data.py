@@ -58,4 +58,8 @@ if __name__ == '__main__':
     # write data to files
     append_data_to_file('./min_data.csv', 14)
     append_data_to_file('./avg_data.csv', 15)
+    append_data_to_file('./max_data.csv', 16)
+    append_data_to_file('./dpu_perf.csv', 18)
+    append_data_to_file('./mem_io.csv', 19)
+    append_data_to_file('./mem_bandwth.csv', 18)
 
