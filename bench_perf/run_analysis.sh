@@ -9,7 +9,7 @@ conda activate vitis-ai-tensorflow2
 for i in 1 2 3
 do
   # run test with profiler
-  python ../test/dpu_single.py -m vaitrace_py --model $(pwd)/compiled_$i/fmnist.xmodel
+  python -m vaitrace_py ../test/dpu_single.py --model $(pwd)/compiled_$i/fmnist.xmodel
 
   # collect data for further processing
   python ./collect_data.py --layer $i
