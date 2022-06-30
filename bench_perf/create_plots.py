@@ -26,6 +26,7 @@ if __name__ == '__main__':
     # plot
     plt.figure()
     plt.subplot(1, 1, 1)
+    plt.xlabel('Parameters')
     plt.plot(x, y_batch4, 'k')
 
     plt.figure()
@@ -36,4 +37,4 @@ if __name__ == '__main__':
     plt.subplot(1, 1, 1)
     plt.plot(x, y_batch5_second, 'bo')
 
-    plt.show()
+    plt.savefig('foo.png')
