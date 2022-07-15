@@ -9,18 +9,15 @@ divider = '------------------------------------'
 def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('imagenet2012', split='validation', shuffle_files=True, data_dir=data_dir)
-
     images = []
     labels = []
     i = 0
     for record in tfds.as_numpy(ds_test):
         images.append(tf.image.resize(record['image'], [224, 224]).numpy())
         labels.append(record['label'])
-
         i += 1
         if i == size:
             break
-
     return images, labels
 
 
