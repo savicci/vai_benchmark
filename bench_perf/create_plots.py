@@ -1,11 +1,12 @@
 from matplotlib import pyplot as plt
 import csv
 
-cols_num = 4
+COLS_NUM = 4
 
-if __name__ == '__main__':
+
+def create_plot(filename, title, ylabel, save_filename):
     rows = []
-    with open('./min_data.csv', 'r') as f:
+    with open(filename, 'r') as f:
         reader = csv.reader(f, delimiter=',')
         for idx, row in enumerate(reader):
             if idx == 0:
@@ -17,24 +18,32 @@ if __name__ == '__main__':
     y_batch4 = []
     y_batch5_first = []
     y_batch5_second = []
-    for i in range(0, len(rows), cols_num):
-        x.append(rows[i])
-        y_batch4.append(rows[i + 1])
-        y_batch5_first.append(rows[i + 2])
-        y_batch5_second.append(rows[i + 2])
+    for i in range(0, len(rows), COLS_NUM):
+        x.append(float(rows[i]))
+        y_batch4.append(float(rows[i + 1]))
+        y_batch5_first.append(float(rows[i + 2]))
+        y_batch5_second.append(float(rows[i + 2]))
 
     # plot
     plt.figure()
-    plt.subplot(1, 1, 1)
     plt.xlabel('Parameters')
-    plt.plot(x, y_batch4, 'k')
+    plt.ylabel(ylabel)
 
-    plt.figure()
-    plt.subplot(1, 1, 1)
-    plt.plot(x, y_batch5_first, 'r--')
+    plt.plot(x, y_batch4, 'k', label='Batch 4')
+    plt.plot(x, y_batch5_first, 'r', label='Batch 5')
+    plt.plot(x, y_batch5_second, 'b', label='Batch 5')
+    plt.legend()
 
-    plt.figure()
-    plt.subplot(1, 1, 1)
-    plt.plot(x, y_batch5_second, 'bo')
+    plt.title(title)
 
-    plt.savefig('foo.png')
+    plt.savefig('plots/{}.png'.format(save_filename))
+    # plt.show()
+
+
+if __name__ == '__main__':
+    create_plot('min_data.csv', 'Time [ms]', 'Minimal inference time', 'min_data')
+    create_plot('avg_data.csv', 'Time [ms]', 'Average inference time', 'avg_data')
+    create_plot('max_data.csv', 'Time [ms]', 'Maximum inference time', 'max_data')
+    create_plot('dpu_perf.csv', 'Workload [GOP/s]', 'DPU Performance', 'dpu_perf')
+    create_plot('mem_io.csv', 'Mem IO [MB]', 'Memory IO', 'mem_io')
+    create_plot('mem_bandwth.csv', 'Mem Bandwidth [MB/s]', 'Memory Bandwidth', 'mem_bandwth')
