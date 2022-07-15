@@ -4,7 +4,7 @@ import csv
 COLS_NUM = 4
 
 
-def create_plot(filename, title, ylabel, save_filename):
+def create_plot(filename, ylabel, title,  save_filename):
     rows = []
     with open(filename, 'r') as f:
         reader = csv.reader(f, delimiter=',')
