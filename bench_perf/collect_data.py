@@ -61,5 +61,5 @@ if __name__ == '__main__':
     append_data_to_file('./max_data.csv', 16)
     append_data_to_file('./dpu_perf.csv', 18)
     append_data_to_file('./mem_io.csv', 19)
-    append_data_to_file('./mem_bandwth.csv', 18)
+    append_data_to_file('./mem_bandwth.csv', 20)
 
