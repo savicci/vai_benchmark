@@ -8,7 +8,7 @@ divider = '------------------------------------'
 
 def load_tensorflow_dataset(size=None) -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
-    ds_test = tfds.load('imagenet2012:5.1.0', split='validation', shuffle_files=True, data_dir=data_dir)
+    ds_test = tfds.load('imagenet2012', split='validation', shuffle_files=True, data_dir=data_dir)
 
     images = []
     labels = []
