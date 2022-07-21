@@ -14,16 +14,16 @@ def create_model(layers_num):
 
     layers.extend([
         tf.keras.Input(shape=fmnist_utils.shape),
-        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu", padding='same', strides=1),
+        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu", padding='same', strides=(3, 3)),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu", padding='same', strides=1),
+        tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu", padding='same', strides=(3, 3)),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding='same', strides=1),
+        tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding='same', strides=(3, 3)),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2))
     ])
 
     for i in range(layers_num):
-        layers.append(tf.keras.layers.Dense(1000, activation="relu"))
+        layers.append(tf.keras.layers.Dense(1000, activation="relu", strides=(3, 3)))
 
     layers.extend([
         tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
