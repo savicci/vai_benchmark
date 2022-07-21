@@ -23,7 +23,7 @@ def create_model(layers_num):
     ])
 
     for i in range(layers_num):
-        layers.append(tf.keras.layers.Dense(1000, activation="relu", strides=(3, 3)))
+        layers.append(tf.keras.layers.Dense(1000, activation="relu"))
 
     layers.extend([
         tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
