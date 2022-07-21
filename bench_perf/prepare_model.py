@@ -21,6 +21,8 @@ def create_model(layers_num):
         tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding='same'),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
         tf.keras.layers.Conv2D(256, kernel_size=(3, 3), activation="relu", padding='same'),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Conv2D(512, kernel_size=(3, 3), activation="relu", padding='same'),
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2))
     ])
 
