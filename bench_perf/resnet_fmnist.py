@@ -4,6 +4,13 @@ from tensorflow.keras.layers import Conv2D, Dense, BatchNormalization, Activatio
 from tensorflow.keras import Model
 import fmnist_utils
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--checkpoint', type=str, default=None,
+                    help='Path to trained h5 model. Default is None and starts training.')
+
+args = parser.parse_args()
 
 
 class ResidualBlock(Model):
@@ -104,6 +111,8 @@ ds_train, ds_test = fmnist_utils.load_dataset(batch_size)
 
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 model.fit(ds_train, epochs=1)
+
+model.save('./fmnist_trained_ckpt.h5')
 
 quantizer = vitis_quantize.VitisQuantizer(model)
 quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=10)
