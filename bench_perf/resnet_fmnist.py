@@ -101,8 +101,12 @@ class ResNet50(Model):
         return x
 
 
-model = ResNet50((28, 28, 1), 10)
-model.build(input_shape=(None, 28, 28, 1))
+if args.checkpoint is None:
+    model = ResNet50((28, 28, 1), 10)
+    model.build(input_shape=(None, 28, 28, 1))
+else:
+    model = tf.keras.models.load_model(args.checkpoint)
+
 model.summary()
 
 batch_size = 128
@@ -110,7 +114,9 @@ batch_size = 128
 ds_train, ds_test = fmnist_utils.load_dataset(batch_size)
 
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-model.fit(ds_train, epochs=1)
+
+if args.checkpoint is None:
+    model.fit(ds_train, epochs=1)
 
 model.save('./fmnist_trained_ckpt.h5')
 
