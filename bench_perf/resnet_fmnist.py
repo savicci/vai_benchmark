@@ -115,10 +115,10 @@ ds_train, ds_test = fmnist_utils.load_dataset(batch_size)
 
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-if args.checkpoint is None:
-    model.fit(ds_train, epochs=1)
+# if args.checkpoint is None:
+    # model.fit(ds_train, epochs=1)
 
-model.save('./fmnist_trained_ckpt.h5')
+# model.save('./fmnist_trained_ckpt.h5')
 
 quantizer = vitis_quantize.VitisQuantizer(model)
 quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=10)
