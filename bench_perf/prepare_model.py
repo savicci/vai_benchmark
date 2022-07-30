@@ -49,7 +49,7 @@ def app(batch_size, layers):
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # train for a moment
-    model.fit(ds_train, epochs=epochs)
+    # model.fit(ds_train, epochs=epochs)
 
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
