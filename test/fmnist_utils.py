@@ -9,6 +9,8 @@ def load_tensorflow_dataset() -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('fashion_mnist', split='test', shuffle_files=True, data_dir=data_dir)
 
+    ds_test = ds_test.repeat(10)
+
     images = []
     labels = []
     for record in tfds.as_numpy(ds_test):
