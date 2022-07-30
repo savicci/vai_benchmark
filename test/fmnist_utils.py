@@ -17,9 +17,8 @@ def load_tensorflow_dataset() -> Tuple[List, List]:
         images.append(record['image'])
         labels.append(record['label'])
 
-    for _ in range(2):
-        images.extend(images)
-        labels.extend(labels)
+    images.extend(images)
+    labels.extend(labels)
 
     return images, labels
 
