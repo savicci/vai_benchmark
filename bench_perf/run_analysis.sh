@@ -9,7 +9,7 @@ ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U280/arch.json
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for i in {1..40}
+for i in {1..3}
 do
   echo Running $i loop
 

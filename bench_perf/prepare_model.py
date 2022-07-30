@@ -3,6 +3,7 @@ import fmnist_utils
 import argparse
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
+import resnet_seq
 
 # variables
 epochs = 1
@@ -42,14 +43,14 @@ def app(batch_size, layers):
     ds_train, ds_test = fmnist_utils.load_dataset(batch_size)
 
     # create model
-    model = create_model(layers)
+    # model = create_model(layers)
+    model = resnet_seq.customized_resnet((28, 28, 1), 10, layers)
+
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # train for a moment
     model.fit(ds_train, epochs=epochs)
 
-    model.save('./fmnist_temp')
-    model = tf.keras.models.load_model('./fmnist_temp')
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # quantize without pruning
@@ -71,7 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('-b', '--batch_size', type=int, default='128',
                         help='Batch size to use for training. Default is 128')
     parser.add_argument('-l', '--layers', type=int, default=1,
-                        help='Amount of dense layers with 1k output size. Default is 1')
+                        help='Amount of residual blocks. Default is 1')
 
     args = parser.parse_args()
     print('Command line options:')
