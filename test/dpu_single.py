@@ -107,6 +107,7 @@ def run_dpus(dpu_runners, img):
 def app(model, dpu_cores):
     # load dataset
     images, labels = load_tensorflow_dataset()
+    print('Loaded dataset')
 
     # create global variable output vectors for runDPU function to fill with data after processing
     global output_vectors
