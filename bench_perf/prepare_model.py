@@ -7,7 +7,7 @@ import resnet_seq
 
 # variables
 epochs = 1
-calibrations = 10
+calibrations = 1
 
 
 def create_model(layers_num):
@@ -55,7 +55,7 @@ def app(batch_size, layers):
 
     # quantize without pruning
     quantizer = vitis_quantize.VitisQuantizer(model)
-    quantized_model = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=calibrations)
+    quantized_model = quantizer.quantize_model(calib_dataset=ds_test, calib_steps=calibrations)
 
     # save model
     quantized_model.save('./fmnist_model.h5')

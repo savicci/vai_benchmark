@@ -18,4 +18,6 @@ do
 
   # collect data for further processing
   python ./collect_data.py --layer $i
+
+  sleep 3
 done
