@@ -1,4 +1,6 @@
 from typing import List, Tuple
+
+import numpy as np
 import tensorflow_datasets as tfds
 import os
 
@@ -9,13 +11,14 @@ def load_tensorflow_dataset() -> Tuple[List, List]:
     data_dir = os.getenv('TFDS_DATA_DIR')
     ds_test = tfds.load('fashion_mnist', split='test', shuffle_files=True, data_dir=data_dir)
 
-    ds_test = ds_test.repeat(3)
-
     images = []
     labels = []
     for record in tfds.as_numpy(ds_test):
         images.append(record['image'])
         labels.append(record['label'])
+
+    images = np.tile(images, 3)
+    labels = np.tile(labels, 3)
 
     return images, labels
 
