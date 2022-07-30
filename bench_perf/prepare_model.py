@@ -7,7 +7,7 @@ import resnet_seq
 
 # variables
 epochs = 1
-calibrations = 1
+calibrations = 10
 
 
 def create_model(layers_num):
