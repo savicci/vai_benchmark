@@ -50,12 +50,12 @@ def customized_resnet(input_shape, output_dim, residuals_num):
         layers.extend(residual_block(256, 256))
 
     layers.append(tf.keras.layers.Conv2D(512, kernel_size=(1, 1), strides=(2, 2)))
-    for _ in range(residuals_num):
+    for _ in range(2):
         layers.extend(residual_block(512, 512))
 
-    # layers.append(tf.keras.layers.Conv2D(1024, kernel_size=(1, 1), strides=(2, 2)))
-    # for _ in range(2):
-    #     layers.extend(residual_block(1024, 1024))
+    layers.append(tf.keras.layers.Conv2D(1024, kernel_size=(1, 1), strides=(2, 2)))
+    for _ in range(residuals_num):
+        layers.extend(residual_block(1024, 1024))
 
     # layers.append(tf.keras.layers.Conv2D(2048, kernel_size=(1, 1), strides=(2, 2)))
     # for _ in range(1):
