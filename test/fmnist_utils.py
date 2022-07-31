@@ -16,7 +16,6 @@ def load_tensorflow_dataset() -> Tuple[List, List]:
     for record in tfds.as_numpy(ds_test):
         images.append(record['image'])
         labels.append(record['label'])
-        break
 
     # images.extend(images)
     # labels.extend(labels)
