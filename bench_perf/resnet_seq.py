@@ -62,7 +62,7 @@ def customized_resnet(input_shape, output_dim, residuals_num):
     #     layers.extend(residual_block(2048, 2048))
 
     layers.extend([
-        tf.keras.layers.GlobalAveragePooling2D(),
+        tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(1000, activation=tf.nn.relu),
         tf.keras.layers.Dense(output_dim, activation=tf.nn.softmax)
     ])
