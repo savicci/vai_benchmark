@@ -6,7 +6,7 @@ source ../compile/setupAlveoLatency.sh
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for ((i=10;i<=210;i=i+10))
+for ((i=10;i<=510;i=i+10))
 do
   echo Running $i loop
 
