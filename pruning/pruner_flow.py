@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from tf_nndct.optimization import IterativePruningRunner
 from contextlib import redirect_stdout
+import argparse
 
 tf.get_logger().setLevel('WARNING')
 
@@ -9,6 +10,12 @@ tf.get_logger().setLevel('WARNING')
 SHARPNESS = 0.2
 MAX_ITERATIONS = 5
 DESIRED_ACCURACY = 0.85
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-m', '--model', type=str, default='fmnist',
+                    help='Model name. Default fmnist')
+args = parser.parse_args()
+print(' --model     : ', args.model)
 
 
 def add_normalized_values(img, label):
@@ -67,7 +74,7 @@ def prune_loop(init_model):
             print("Accuracy after pruning {}".format(curr_accuracy))
 
         # load sparse_model weights to base_model
-        filename = "/workspace/vai_benchmark/data/pruned/fmnist_model_sparse_{}".format(i)
+        filename = "/workspace/vai_benchmark/data/pruned/{}_model_sparse_{}".format(args.model, i)
         sparse_model.save_weights(filename, save_format="tf")
         base_model.load_weights(filename)
 
@@ -104,7 +111,7 @@ init_model.fit(ds_train, epochs=15)
 init_model.evaluate(ds_test)
 
 # save init summary
-with open('/workspace/vai_benchmark/data/results/fmnist_init_model_summary.txt', 'w') as f:
+with open('/workspace/vai_benchmark/data/results/{}_init_model_summary.txt'.format(args.model), 'w') as f:
     with redirect_stdout(f):
         init_model.summary()
 
@@ -119,8 +126,8 @@ runner = IterativePruningRunner(final_model, spec)
 pruned_slim_model = runner.get_slim_model()
 
 # save pruned summary
-with open('/workspace/vai_benchmark/data/results/fmnist_pruned_model_summary.txt', 'w') as f:
+with open('/workspace/vai_benchmark/data/results/{}_pruned_model_summary.txt'.format(args.model), 'w') as f:
     with redirect_stdout(f):
         pruned_slim_model.summary()
 
-pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_fmnist')
+pruned_slim_model.save('/workspace/vai_benchmark/data/models/pruned_{}'.format(args.model))

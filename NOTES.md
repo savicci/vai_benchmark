@@ -11,3 +11,10 @@ Latency has only 1 engine, slower for multiple threads, faster for 1 example.
 
 Fmnist 1 example
 0.0018ms for throughput, 0.0012ms for latency
+
+
+
+
+
+---------------------------
+for d in */ ; do   echo "$d";  ls "$d/" -l ; done listuje foldery
