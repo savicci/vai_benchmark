@@ -3,6 +3,9 @@ import bench_perf.fmnist_utils as fmnist_utils
 import argparse
 import os
 from contextlib import redirect_stdout
+import sys
+
+sys.path.append('../bench_perf')
 
 input_shape = (28, 28, 1)
 output_shape = 10
