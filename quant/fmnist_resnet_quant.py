@@ -25,11 +25,12 @@ def app(batch_size, epochs, path, model_path):
     quantizer = vitis_quantize.VitisQuantizer(model)
 
     # quantize without fine-tuning
-    quantized_model_no_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=None, include_fast_ft=False)
+    quantized_model_no_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=10, calib_steps=None,
+                                                     include_fast_ft=False)
 
     # quantize with fine-tuning
-    quantized_model_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_steps=None, include_fast_ft=True,
-                                                  fast_ft_epochs=10)
+    quantized_model_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=10, calib_steps=None,
+                                                  include_fast_ft=True, fast_ft_epochs=10)
 
     # quantization aware training
     quantizer_qat = vitis_quantize.VitisQuantizer(model, quantize_strategy='8bit_tqt')
