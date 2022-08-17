@@ -14,6 +14,10 @@ output_shape = 10
 
 CALIB_BATCH_SIZE = 10
 
+physical_devices = tf.config.list_physical_devices('GPU')
+for device in physical_devices:
+    tf.config.experimental.set_memory_growth(device, True)
+
 
 def app(batch_size, epochs, path, model_path):
     ds_train, ds_test = fmnist_utils.load_dataset(batch_size)
@@ -25,11 +29,11 @@ def app(batch_size, epochs, path, model_path):
     quantizer = vitis_quantize.VitisQuantizer(model)
 
     # quantize without fine-tuning
-    quantized_model_no_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=5, calib_steps=None,
+    quantized_model_no_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=10, calib_steps=None,
                                                      include_fast_ft=False)
 
     # quantize with fine-tuning
-    quantized_model_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=5, calib_steps=None,
+    quantized_model_ft = quantizer.quantize_model(calib_dataset=ds_train, calib_batch_size=10, calib_steps=None,
                                                   include_fast_ft=True, fast_ft_epochs=10)
 
     # quantization aware training
