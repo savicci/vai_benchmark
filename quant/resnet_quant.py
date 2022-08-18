@@ -5,14 +5,10 @@ import os
 from contextlib import redirect_stdout
 from tensorflow_model_optimization.quantization.keras import vitis_quantize
 
-input_shape = (28, 28, 1)
-output_shape = 10
-
-CALIB_BATCH_SIZE = 10
-
 physical_devices = tf.config.list_physical_devices('GPU')
 for device in physical_devices:
     tf.config.experimental.set_memory_growth(device, True)
+
 
 def add_normalized_values(img, label):
     """Normalizes images"""
@@ -21,7 +17,8 @@ def add_normalized_values(img, label):
 
 
 def load_dataset(batch_size):
-    (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True, shuffle_files=True)
+    (ds_train, ds_validation) = tfds.load('imagenet2012', split=['train', 'validation'], as_supervised=True,
+                                          shuffle_files=True)
     # map data
     ds_train = ds_train.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     ds_validation = ds_validation.map(add_normalized_values, num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -44,12 +41,12 @@ def app(batch_size, epochs, path, model_path):
 
     # quantize without fine-tuning
     print("Start quantizing not ft")
-    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=10, calib_batch_size=10,
-                                                     include_fast_ft=False)
+    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=8, calib_batch_size=8,
+                                                           include_fast_ft=False)
     # quantize with fine-tuning
     print("Start quantizing ft")
-    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=10, calib_batch_size=10,
-                                                  include_fast_ft=True, fast_ft_epochs=10)
+    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=8, calib_batch_size=8,
+                                                     include_fast_ft=True, fast_ft_epochs=10)
 
     # quantization aware training
     print("Start quantizing quat")
