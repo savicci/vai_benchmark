@@ -29,7 +29,8 @@ def load_dataset(batch_size):
 
 
 def app(batch_size, epochs, path, model_path):
-    ds_train, ds_test = load_dataset(batch_size)
+    # for ptq
+    ds_train, ds_test = load_dataset(16)
 
     # trained model
     model = tf.keras.models.load_model(model_path)
@@ -50,6 +51,7 @@ def app(batch_size, epochs, path, model_path):
 
     # quantization aware training
     print("Start quantizing quat")
+    ds_train, ds_test = load_dataset(batch_size)
     qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train)
     qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     qat_model.fit(ds_train, epochs=epochs)
@@ -83,8 +85,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-b', '--batch_size', type=int, default='64',
                         help='Batch size to use for QAT training. Default is 64')
-    parser.add_argument('-e', '--epochs', type=int, default='10',
-                        help='Epoch number to train QAT network. Default is 10')
+    parser.add_argument('-e', '--epochs', type=int, default='5',
+                        help='Epoch number to train QAT network. Default is 5')
     parser.add_argument('-p', '--path', type=str, default='/workspace/vai_benchmark/data/resnet/quant',
                         help='Path to folder where all information will be written. Default '
                              '/workspace/vai_benchmark/data/resnet/quant')
