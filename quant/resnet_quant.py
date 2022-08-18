@@ -29,9 +29,6 @@ def load_dataset(batch_size):
 
 
 def app(batch_size, epochs, path, model_path):
-    # for ptq
-    ds_train, ds_test = load_dataset(16)
-
     # trained model
     model = tf.keras.models.load_model(model_path)
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -39,6 +36,18 @@ def app(batch_size, epochs, path, model_path):
     no_ft_quantizer = vitis_quantize.VitisQuantizer(model)
     ft_quantizer = vitis_quantize.VitisQuantizer(model)
     quantizer_qat = vitis_quantize.VitisQuantizer(model, quantize_strategy='8bit_tqt')
+
+    # quantization aware training
+    print("Start quantizing quat")
+    ds_train, ds_test = load_dataset(batch_size)
+    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train)
+    qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    qat_model.fit(ds_train, epochs=epochs)
+
+    qat_quantized_model = quantizer_qat.get_deploy_model(model)
+
+    # for ptq
+    ds_train, ds_test = load_dataset(16)
 
     # quantize without fine-tuning
     print("Start quantizing not ft")
@@ -49,14 +58,6 @@ def app(batch_size, epochs, path, model_path):
     quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=2, calib_batch_size=2,
                                                      include_fast_ft=True, fast_ft_epochs=10)
 
-    # quantization aware training
-    print("Start quantizing quat")
-    ds_train, ds_test = load_dataset(batch_size)
-    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train)
-    qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    qat_model.fit(ds_train, epochs=epochs)
-
-    qat_quantized_model = quantizer_qat.get_deploy_model(model)
 
     # record evaluation results
     quantized_model_no_ft.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
