@@ -32,16 +32,16 @@ def app(batch_size, epochs, path, model_path):
 
     # quantize without fine-tuning
     print("Start quantizing not ft")
-    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=50, calib_batch_size=10,
+    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_test, calib_steps=50, calib_batch_size=10,
                                                      include_fast_ft=False)
     # quantize with fine-tuning
     print("Start quantizing ft")
-    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=50, calib_batch_size=10,
+    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_test, calib_steps=50, calib_batch_size=10,
                                                   include_fast_ft=True, fast_ft_epochs=10)
 
     # quantization aware training
     print("Start quantizing quat")
-    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train)
+    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_test)
     qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     qat_model.fit(ds_train, epochs=epochs)
 
