@@ -41,11 +41,11 @@ def app(batch_size, epochs, path, model_path):
 
     # quantize without fine-tuning
     print("Start quantizing not ft")
-    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=8, calib_batch_size=8,
+    quantized_model_no_ft = no_ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=4, calib_batch_size=4,
                                                            include_fast_ft=False)
     # quantize with fine-tuning
     print("Start quantizing ft")
-    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=8, calib_batch_size=8,
+    quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=4, calib_batch_size=4,
                                                      include_fast_ft=True, fast_ft_epochs=10)
 
     # quantization aware training
