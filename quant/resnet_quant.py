@@ -44,6 +44,8 @@ def app(batch_size, epochs, path, model_path):
     qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     qat_model.fit(ds_train, epochs=epochs)
 
+    qat_model.save('./qat_trained_model.h5')
+
     qat_quantized_model = quantizer_qat.get_deploy_model(model)
 
     # for ptq
@@ -57,7 +59,6 @@ def app(batch_size, epochs, path, model_path):
     print("Start quantizing ft")
     quantized_model_ft = ft_quantizer.quantize_model(calib_dataset=ds_train, calib_steps=2, calib_batch_size=2,
                                                      include_fast_ft=True, fast_ft_epochs=10)
-
 
     # record evaluation results
     quantized_model_no_ft.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
