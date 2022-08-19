@@ -40,7 +40,7 @@ def app(batch_size, epochs, path, model_path):
     # quantization aware training
     print("Start quantizing quat")
     ds_train, ds_test = load_dataset(batch_size)
-    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train)
+    qat_model = quantizer_qat.get_qat_model(init_quant=True, calib_dataset=ds_train, calib_steps=2, calib_batch_size=2)
     qat_model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     qat_model.fit(ds_train, epochs=epochs)
 
