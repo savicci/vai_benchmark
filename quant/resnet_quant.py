@@ -87,8 +87,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-b', '--batch_size', type=int, default='64',
                         help='Batch size to use for QAT training. Default is 64')
-    parser.add_argument('-e', '--epochs', type=int, default='5',
-                        help='Epoch number to train QAT network. Default is 5')
+    parser.add_argument('-e', '--epochs', type=int, default='3',
+                        help='Epoch number to train QAT network. Default is 3')
     parser.add_argument('-p', '--path', type=str, default='/workspace/vai_benchmark/data/resnet/quant',
                         help='Path to folder where all information will be written. Default '
                              '/workspace/vai_benchmark/data/resnet/quant')
