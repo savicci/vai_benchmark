@@ -31,12 +31,12 @@ def create_plot():
     y_gpu_thr = []
 
     for i in range(len(dpu_rows)):
-        x.append(dpu_rows[i][0])
-        y_dpu_thr.append(dpu_rows[i][1])
-        y_dpu_time.append(dpu_rows[i][2])
+        x.append(float(dpu_rows[i][0]))
+        y_dpu_thr.append(round(float(dpu_rows[i][1]), 1))
+        y_dpu_time.append(round(float(dpu_rows[i][2]), 3))
 
-        y_gpu_thr.append(gpu_rows[i][1])
-        y_gpu_time.append(gpu_rows[i][2])
+        y_gpu_thr.append(round(float(gpu_rows[i][1]), 1))
+        y_gpu_time.append(round(float(gpu_rows[i][2]), 3))
 
     # plot for time
     plt.figure()
