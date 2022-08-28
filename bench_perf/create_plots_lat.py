@@ -15,18 +15,17 @@ def create_plot(filename, ylabel, title,  save_filename):
                 rows.extend(row)
 
     x = []
-    y_batch4 = []
+    y = []
     for i in range(0, len(rows), COLS_NUM):
         x.append(float(rows[i]))
-        y_batch4.append(float(rows[i + 1]))
+        y.append(float(rows[i + 1]))
 
     # plot
     plt.figure()
     plt.xlabel('Parameters')
     plt.ylabel(ylabel)
 
-    plt.plot(x, y_batch4, 'b')
-    plt.legend()
+    plt.plot(x, y, 'b')
 
     plt.title(title)
 
