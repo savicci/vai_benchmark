@@ -12,7 +12,7 @@ def create_plot():
             if idx == 0:
                 continue
             else:
-                dpu_rows.extend(row)
+                dpu_rows.append(row)
 
     with open('./gpu_data_sets/gpu_results.csv', 'r') as f:
         reader = csv.reader(f, delimiter=',')
@@ -20,7 +20,7 @@ def create_plot():
             if idx == 0:
                 continue
             else:
-                gpu_rows.extend(row)
+                gpu_rows.append(row)
 
     assert len(dpu_rows) == len(gpu_rows)
 
