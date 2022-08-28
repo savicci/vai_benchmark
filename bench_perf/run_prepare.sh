@@ -20,5 +20,5 @@ do
   vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH -o ./compiled_$i -n fmnist
 
   # compile for latency
-#  vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH_LAT -o ./compiled_lat_$i -n fmnist
+  vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH_LAT -o ./compiled_lat_$i -n fmnist
 done
