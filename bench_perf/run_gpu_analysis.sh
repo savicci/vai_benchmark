@@ -4,6 +4,8 @@ export CUDA_VISIBLE_DEVICES=1
 
 conda activate vitis-ai-tensorflow2
 
+rm -f gpu_results.csv
+
 for i in {1..40}
 do
   echo Running $i loop
