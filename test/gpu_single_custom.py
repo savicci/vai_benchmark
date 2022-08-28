@@ -18,7 +18,7 @@ import os
 divider = '------------------------------------'
 
 
-def app(batch_size, layers, file):
+def app(batch_size, layers, file, threads):
     tf.config.experimental.list_physical_devices()
 
     # load dataset
@@ -39,7 +39,7 @@ def app(batch_size, layers, file):
     start_time = time.time()
 
     # process images
-    model.predict(processed_images, batch_size=batch_size, use_multiprocessing=True)
+    model.predict(processed_images, batch_size=batch_size, workers=threads, use_multiprocessing=True)
 
     end_time = time.time()
 
@@ -71,6 +71,8 @@ if __name__ == '__main__':
                         help='Batch size used for prediction. Default is 32')
     parser.add_argument('-t', '--layers', type=int, default='1',
                         help='Layers to add parameters. Default is 1')
+    parser.add_argument('-h', '--threads', type=int, default='1',
+                        help='Threads to multiprocessing. Default is 1')
     parser.add_argument('-f', '--file', type=str, default='gpu_results.csv',
                         help='File to append result data to. Default is gpu_results.csv')
 
@@ -78,5 +80,6 @@ if __name__ == '__main__':
     print(' --batch_size     : ', args.batch_size)
     print(' --layers     : ', args.layers)
     print(' --file     : ', args.file)
+    print(' --threads     : ', args.threads)
 
-    app(args.batch_size, args.layers, args.file)
+    app(args.batch_size, args.layers, args.file, args.threads)
