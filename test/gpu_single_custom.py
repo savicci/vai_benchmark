@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('../bench_perf')
+
 import argparse
 import time
 
@@ -5,18 +9,23 @@ import numpy as np
 import tensorflow as tf
 
 import fmnist_utils
+import resnet_seq
+import fmnist_utils
+import csv
+import os
+
 
 divider = '------------------------------------'
 
 
-def app(model, batch_size, threads):
+def app(batch_size, layers, file):
     tf.config.experimental.list_physical_devices()
 
     # load dataset
     images, labels = fmnist_utils.load_tensorflow_dataset()
 
     # load model
-    model = tf.keras.models.load_model(model)
+    model = resnet_seq.customized_resnet((28, 28, 1), 10, layers)
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     # to keep same interfaces, will not do anything
@@ -30,37 +39,44 @@ def app(model, batch_size, threads):
     start_time = time.time()
 
     # process images
-    output_vectors = model.predict(processed_images, batch_size=batch_size, workers=threads, use_multiprocessing=True)
+    model.predict(processed_images, batch_size=batch_size, use_multiprocessing=True)
+
     end_time = time.time()
 
     execution_time = end_time - start_time
-
-    # get top 1 value
-    output_vectors = [np.argmax(prediction) for prediction in output_vectors]
 
     throughput = float(len(processed_images) / execution_time)
     print(divider)
     print("Throughput=%.2f fps, total frames = %.0f, time=%.4f seconds" % (
         throughput, len(processed_images), execution_time))
 
-    print(divider)
-    print('Postprocessing {} images'.format(len(processed_images)))
-    fmnist_utils.postprocess_results(output_vectors, labels)
+    # write header row
+    header_row = ['Params', 'Throughput [fps]', 'Execution time [s]']
+    if not os.path.exists(file):
+        with open(file, 'w') as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(header_row)
+
+    params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
+    data_row = [params, throughput, execution_time]
+    with open(file, 'a') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow(data_row)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-m', '--model', type=str, default='model.h5',
-                        help='Path to h5 model file. Default is model.h5 in current directory')
     parser.add_argument('-b', '--batch_size', type=int, default='32',
                         help='Batch size used for prediction. Default is 32')
-    parser.add_argument('-t', '--threads', type=int, default='1',
-                        help='Workers to use for multi process threading prediction. Default is 1')
+    parser.add_argument('-t', '--layers', type=int, default='1',
+                        help='Layers to add parameters. Default is 1')
+    parser.add_argument('-f', '--file', type=int, default='gpu_results.csv',
+                        help='File to append result data to. Default is gpu_results.csv')
 
     args = parser.parse_args()
-    print(' --model     : ', args.model)
     print(' --batch_size     : ', args.batch_size)
-    print(' --threads     : ', args.threads)
+    print(' --layers     : ', args.layers)
+    print(' --file     : ', args.file)
 
-    app(args.model, args.batch_size, args.threads)
+    app(args.batch_size, args.layers, args.file)

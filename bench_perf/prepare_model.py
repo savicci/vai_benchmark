@@ -1,7 +1,7 @@
 import tensorflow as tf
 import fmnist_utils
 import argparse
-from tensorflow_model_optimization.quantization.keras import vitis_quantize
+# from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
 import resnet_seq
 
@@ -45,6 +45,7 @@ def app(batch_size, layers):
     # create model
     # model = create_model(layers)
     model = resnet_seq.customized_resnet((28, 28, 1), 10, layers)
+    model.summary()
 
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
@@ -71,7 +72,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-b', '--batch_size', type=int, default='128',
                         help='Batch size to use for training. Default is 128')
-    parser.add_argument('-l', '--layers', type=int, default=1,
+    parser.add_argument('-l', '--layers', type=int, default=40,
                         help='Amount of residual blocks. Default is 1')
 
     args = parser.parse_args()

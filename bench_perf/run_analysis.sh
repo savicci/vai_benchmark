@@ -6,7 +6,7 @@ source ../compile/setupAlveoThroughput.sh
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for ((i=1;i<=16;i=i+1))
+for i in {1..40}
 do
   echo Running $i loop
 
