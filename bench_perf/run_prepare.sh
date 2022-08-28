@@ -9,7 +9,7 @@ ARCH_LAT=/opt/vitis_ai/compiler/arch/DPUCAHX8L/U280/arch.json
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for ((i=1;i<=16;i=i+1))
+for i in {1..40}
 do
   echo Running $i loop
 
@@ -20,5 +20,5 @@ do
   vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH -o ./compiled_$i -n fmnist
 
   # compile for latency
-  vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH_LAT -o ./compiled_lat_$i -n fmnist
+#  vai_c_tensorflow2 -m ./fmnist_model.h5 -a $ARCH_LAT -o ./compiled_lat_$i -n fmnist
 done

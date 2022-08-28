@@ -5,13 +5,15 @@ source ../compile/setupAlveoThroughput.sh
 
 conda activate vitis-ai-tensorflow2
 
+rm -f dpu_results.csv
+
 # loop so we have more data
 for i in {1..40}
 do
   echo Running $i loop
 
   # run test with profiler
-  python -m vaitrace_py -t 30 ../test/dpu_single.py --model $(pwd)/compiled_$i/fmnist.xmodel
+  python -m vaitrace_py -t 30 ../test/dpu_single.py --model $(pwd)/compiled_$i/fmnist.xmodel --file dpu_results.csv
 
   # collect data for further processing
   python ./collect_data.py --layer $i

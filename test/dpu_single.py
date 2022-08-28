@@ -7,6 +7,8 @@ import vart
 import argparse
 import time
 import fmnist_utils
+import os
+import csv
 
 divider = '------------------------------------'
 
@@ -104,7 +106,7 @@ def run_dpus(dpu_runners, img):
             write_index += 1
 
 
-def app(model, dpu_cores):
+def app(model, dpu_cores, file):
     # load dataset
     images, labels = load_tensorflow_dataset()
     print('Loaded dataset')
@@ -142,9 +144,22 @@ def app(model, dpu_cores):
     print("Throughput=%.2f fps, total frames = %.0f, time=%.4f seconds" % (
         throughput, len(processed_images), execution_time))
 
-    print(divider)
-    print('Postprocessing {} images'.format(len(processed_images)))
-    postprocess_results(output_vectors, labels)
+    # write header row
+    header_row = ['Params', 'Throughput [fps]', 'Execution time [s]']
+    if not os.path.exists(file):
+        with open(file, 'w') as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(header_row)
+
+    params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
+    data_row = [params, throughput, execution_time]
+    with open(file, 'a') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow(data_row)
+
+    # print(divider)
+    # print('Postprocessing {} images'.format(len(processed_images)))
+    # postprocess_results(output_vectors, labels)
 
 
 if __name__ == '__main__':
@@ -154,10 +169,13 @@ if __name__ == '__main__':
                         help='Path to xmodel file. Default is file.xmodel in current directory')
     parser.add_argument('-d', '--dpu_cores', type=int, default=3,
                         help='DPU cores to use. Default for Alveo U280 is 3')
+    parser.add_argument('-f', '--file', type=str, default='dpu_results.csv',
+                        help='File to append result data to. Default is dpu_results.csv')
 
     args = parser.parse_args()
     print('Command line options:')
     print(' --model     : ', args.model)
     print(' --dpu_cores     : ', args.dpu_cores)
+    print(' --file     : ', args.file)
 
-    app(args.model, args.dpu_cores)
+    app(args.model, args.dpu_cores, args.file)
