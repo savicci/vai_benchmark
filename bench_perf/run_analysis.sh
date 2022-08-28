@@ -5,8 +5,6 @@ source ../compile/setupAlveoThroughput.sh
 
 conda activate vitis-ai-tensorflow2
 
-rm -f dpu_results.csv
-
 # loop so we have more data
 for i in {1..40}
 do
