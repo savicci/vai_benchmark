@@ -10,5 +10,5 @@ for i in {1..40}
 do
   echo Running $i loop
 
-  python ../test/gpu_single_custom.py --layers $i --file gpu_results.csv
+  python ../test/gpu_single_custom.py --layers $i --file gpu_results.csv --batch_size 256
 done
