@@ -71,7 +71,7 @@ if __name__ == '__main__':
                         help='Batch size used for prediction. Default is 32')
     parser.add_argument('-t', '--layers', type=int, default='1',
                         help='Layers to add parameters. Default is 1')
-    parser.add_argument('-f', '--file', type=int, default='gpu_results.csv',
+    parser.add_argument('-f', '--file', type=str, default='gpu_results.csv',
                         help='File to append result data to. Default is gpu_results.csv')
 
     args = parser.parse_args()
