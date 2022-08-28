@@ -43,8 +43,8 @@ def create_plot():
     plt.xlabel('Parameters')
     plt.ylabel('Processing time [s]')
 
-    plt.plot(x, y_dpu_time, 'r', 'DPU')
-    plt.plot(x, y_gpu_time, 'b', 'GPU')
+    plt.plot(x, y_dpu_time, 'r', label='DPU')
+    plt.plot(x, y_gpu_time, 'b', label='GPU')
     plt.legend()
     plt.title('Processing time comparison')
 
@@ -55,8 +55,8 @@ def create_plot():
     plt.xlabel('Parameters')
     plt.ylabel('Throughput [fps]')
 
-    plt.plot(x, y_dpu_thr, 'r', 'DPU')
-    plt.plot(x, y_gpu_thr, 'b', 'GPU')
+    plt.plot(x, y_dpu_thr, 'r', label='DPU')
+    plt.plot(x, y_gpu_thr, 'b', label='GPU')
     plt.legend()
     plt.title('Throughput comparison')
 
