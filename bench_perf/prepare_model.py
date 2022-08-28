@@ -1,41 +1,13 @@
 import tensorflow as tf
 import fmnist_utils
 import argparse
-# from tensorflow_model_optimization.quantization.keras import vitis_quantize
+from tensorflow_model_optimization.quantization.keras import vitis_quantize
 import numpy as np
 import resnet_seq
 
 # variables
 epochs = 1
 calibrations = 10
-
-
-def create_model(layers_num):
-    layers = []
-
-    layers.extend([
-        tf.keras.Input(shape=fmnist_utils.shape),
-        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu", padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu", padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(256, kernel_size=(3, 3), activation="relu", padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
-        tf.keras.layers.Conv2D(512, kernel_size=(3, 3), activation="relu", padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2))
-    ])
-
-    # for i in range(layers_num):
-    #     layers.append(tf.keras.layers.Dense(1000, activation="relu"))
-
-    layers.extend([
-        tf.keras.layers.Flatten(), tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(fmnist_utils.output_classes, activation="softmax"),
-    ])
-
-    return tf.keras.Sequential(layers)
 
 
 def app(batch_size, layers):
