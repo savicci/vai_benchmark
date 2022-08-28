@@ -13,7 +13,7 @@ do
   echo Running $i loop
 
   # run test with profiler
-  python -m vaitrace_py -t 30 ../test/dpu_single.py --model $(pwd)/compiled_$i/fmnist.xmodel --file dpu_results.csv
+  python -m vaitrace_py -t 30 ../test/dpu_single.py --model $(pwd)/compiled_$i/fmnist.xmodel --file dpu_results.csv --layer $i
 
   # collect data for further processing
   python ./collect_data.py --layer $i

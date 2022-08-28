@@ -106,7 +106,7 @@ def run_dpus(dpu_runners, img):
             write_index += 1
 
 
-def app(model, dpu_cores, file):
+def app(model, dpu_cores, file, layer):
     # load dataset
     images, labels = load_tensorflow_dataset()
     print('Loaded dataset')
@@ -151,7 +151,9 @@ def app(model, dpu_cores, file):
             writer = csv.writer(f, delimiter=',')
             writer.writerow(header_row)
 
-    params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
+    with open('/workspace/vai_benchmark/bench_perf/params_{}.txt'.format(layer), 'r') as f:
+        params = f.readline()
+
     data_row = [params, throughput, execution_time]
     with open(file, 'a') as f:
         writer = csv.writer(f, delimiter=',')
@@ -171,11 +173,14 @@ if __name__ == '__main__':
                         help='DPU cores to use. Default for Alveo U280 is 3')
     parser.add_argument('-f', '--file', type=str, default='dpu_results.csv',
                         help='File to append result data to. Default is dpu_results.csv')
+    parser.add_argument('-l', '--layer', type=str, default='dpu_results.csv',
+                        help='File to append result data to. Default is dpu_results.csv')
 
     args = parser.parse_args()
     print('Command line options:')
     print(' --model     : ', args.model)
     print(' --dpu_cores     : ', args.dpu_cores)
     print(' --file     : ', args.file)
+    print(' --layer     : ', args.layer)
 
-    app(args.model, args.dpu_cores, args.file)
+    app(args.model, args.dpu_cores, args.file, args.layer)

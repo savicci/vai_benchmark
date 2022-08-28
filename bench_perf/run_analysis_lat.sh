@@ -6,12 +6,12 @@ source ../compile/setupAlveoLatency.sh
 conda activate vitis-ai-tensorflow2
 
 # loop so we have more data
-for ((i=1;i<=16;i=i+1))
+for i in {1..40}
 do
   echo Running $i loop
 
   # run test with profiler
-  python -m vaitrace_py ../test/dpu_single.py --model $(pwd)/compiled_lat_$i/fmnist.xmodel
+  python -m vaitrace_py ../test/dpu_single.py --model $(pwd)/compiled_lat_$i/fmnist.xmodel --layer $i --file dpu_results_lat.csv
 
   # collect data for further processing
   python ./collect_data.py --layer $i
