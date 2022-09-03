@@ -29,8 +29,8 @@ def create_plot(filename, ylabel, title,  save_filename):
     plt.xlabel('Parameters')
     plt.ylabel(ylabel)
 
-    plt.plot(x, y_batch4, 'k', label='PEngine1 (batch_size 4)')
-    plt.plot(x, y_batch5_first, 'r', label='PEngine2 (batch_size 5)')
+    plt.plot(x, y_batch4, 'k', label='PEngine1 (batch 4)')
+    plt.plot(x, y_batch5_first, 'r', label='PEngine2 (batch 5)')
     # plt.plot(x, y_batch5_second, 'b', label='Batch 5')
     plt.legend()
 
