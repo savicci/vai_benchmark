@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import csv
 
-COLS_NUM = 4
+COLS_NUM = 3
 
 
 def create_plot(filename, ylabel, title,  save_filename):
