@@ -14,7 +14,7 @@ def create_plot():
             else:
                 dpu_thr_rows.append(row)
 
-    with open('./lat_10k_test/dpu_results.csv', 'r') as f:
+    with open('./lat_10k_test/dpu_results_lat.csv', 'r') as f:
         reader = csv.reader(f, delimiter=',')
         for idx, row in enumerate(reader):
             if idx == 0:
