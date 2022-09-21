@@ -25,7 +25,7 @@ def create_plot(filename, ylabel, title,  save_filename):
     plt.xlabel('Parameters')
     plt.ylabel(ylabel)
 
-    plt.plot(x, y, 'r', label='DPUCAHX8H')
+    plt.plot(x, y, 'r')
     plt.legend()
 
     plt.title(title)
