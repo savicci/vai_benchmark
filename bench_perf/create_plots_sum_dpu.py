@@ -26,8 +26,6 @@ def create_plot(filename, ylabel, title,  save_filename):
     plt.ylabel(ylabel)
 
     plt.plot(x, y, 'r')
-    plt.legend()
-
     plt.title(title)
 
     plt.savefig('plots/{}.png'.format(save_filename))
